@@ -24,7 +24,7 @@ function Signup() {
 
     return (
         <>
-            <form onSubmit={submitHandler}>
+           
                 <div>
                     <label>User Name:</label>
                     <input value={formData.username} type="text" name="user_name" onChange={txtBxHandler} />
@@ -38,9 +38,9 @@ function Signup() {
                     <input value={formData.password} type="password" name="user_password" onChange={txtBxHandler} />
                 </div>
                 <div>
-                    <button type='submit'>Submit</button>
+                    <button type='submit'onClick={submitHandler}>Submit</button>
                 </div>
-            </form>
+           
         </>
     )
 }

@@ -1,0 +1,189 @@
+/* ============================
+   THEME VARIABLES
+   ============================ */
+:root {
+  --primary-green: #2e7d32;
+  --light-green: #e8f5e9;
+  --dark-green: #1b5e20;
+  --danger-red: #c62828;
+  --light-red: #fdecea;
+  --text-dark: #212121;
+  --text-muted: #6c757d;
+  --border-color: #dcdcdc;
+}
+
+body {
+  background-color: #ffffff;
+  color: var(--text-dark);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ============================
+   NAVBAR
+   ============================ */
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 2px solid var(--primary-green);
+}
+
+.navbar-brand {
+  color: var(--primary-green);
+  font-weight: bold;
+}
+
+.nav-link {
+  color: var(--primary-green) !important;
+}
+
+.nav-link:hover {
+  color: var(--dark-green) !important;
+}
+
+.btn-logout {
+  background-color: var(--primary-green);
+  color: #ffffff;
+  border: none;
+}
+
+.btn-logout:hover {
+  background-color: var(--dark-green);
+  color: #ffffff;
+}
+
+/* ============================
+   BUTTONS
+   ============================ */
+.btn-primary-green {
+  background-color: var(--primary-green);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+}
+
+.btn-primary-green:hover {
+  background-color: var(--dark-green);
+  color: #ffffff;
+}
+
+.btn-outline-green {
+  background-color: transparent;
+  color: var(--primary-green);
+  border: 1px solid var(--primary-green);
+  border-radius: 6px;
+  padding: 8px 16px;
+}
+
+.btn-outline-green:hover {
+  background-color: var(--light-green);
+}
+
+/* ============================
+   CARDS (Groups / Expenses)
+   ============================ */
+.custom-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.custom-card:hover {
+  border-color: var(--primary-green);
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.card-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ============================
+   BALANCE INDICATORS
+   ============================ */
+.balance-positive {
+  color: var(--primary-green);
+  font-weight: 600;
+}
+
+.balance-negative {
+  color: var(--danger-red);
+  font-weight: 600;
+}
+
+.balance-card-positive {
+  background-color: var(--light-green);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.balance-card-negative {
+  background-color: var(--light-red);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+/* ============================
+   FORMS (Login / Signup / Add Expense)
+   ============================ */
+.form-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.form-container h2 {
+  color: var(--primary-green);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: var(--text-dark);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: var(--primary-green);
+}
+
+/* ============================
+   UTILITIES
+   ============================ */
+.text-green {
+  color: var(--primary-green);
+}
+
+.bg-light-green {
+  background-color: var(--light-green);
+}
+
+.text-center-muted {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
