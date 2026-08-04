@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import '../css/style.css'
+import logo from '../assets/spliteaselogo.svg'
 
 function Signup() {
-    let [formData, setFormData] = useState({user_name: "", user_email: "",user_password:""})
+    let [formData, setFormData] = useState({ user_name: "", user_email: "", user_password: "" })
 
     let txtBxHandler = (e) => {
         let { name, value } = e.target
@@ -19,28 +21,35 @@ function Signup() {
         let result = await response.json()
         console.log(result)
 
-        setFormData({ user_name: "", user_email: "",user_password:"" })
+        setFormData({ user_name: "", user_email: "", user_password: "" })
     }
 
     return (
         <>
-           
-                <div>
-                    <label>User Name:</label>
-                    <input value={formData.username} type="text" name="user_name" onChange={txtBxHandler} />
+            <div className="custom-wrapper">
+                <div className="custom-card">
+                    <img src={logo} alt="logo" className="custom-logo" />
+                    <h3 className="card-title ">SIGN UP</h3>
+
+                    <div className='mb-3'>
+                        <label className='form-label'>User Name:</label>
+                        <input value={formData.user_name} type="text" name="user_name" onChange={txtBxHandler} className='form-control' />
+                    </div>
+                    <div className='mb-3'>
+                        <label className='form-label'>Email</label>
+                        <input value={formData.user_email} type="email" name="user_email" onChange={txtBxHandler} className='form-control' />
+                    </div>
+                    <div className='mb-3'>
+                        <label className='form-label'>Password</label>
+                        <input value={formData.user_password} type="password" name="user_password" onChange={txtBxHandler} className='form-control' />
+                    </div>
+                  
+                        <button type='submit' onClick={submitHandler}className="btn btn-brand w-100 btn-outline-green">Submit</button>
+                  
+
                 </div>
-                <div>
-                    <label>Email</label>
-                    <input value={formData.email} type="email" name="user_email" onChange={txtBxHandler} />
-                </div>
-                 <div>
-                    <label>Password</label>
-                    <input value={formData.password} type="password" name="user_password" onChange={txtBxHandler} />
-                </div>
-                <div>
-                    <button type='submit'onClick={submitHandler}>Submit</button>
-                </div>
-           
+            </div>
+
         </>
     )
 }

@@ -1,3 +1,4 @@
+const db = require('./db_config')
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
@@ -6,14 +7,6 @@ const bcrypt = require('bcrypt');
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-
-// app.get('/api/test', (req, res) => {
-    
-//   res.json({ message: 'Server is working' })
-
-// });
-
 
 
 app.post('/signup', async (req, res) => {

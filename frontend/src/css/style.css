@@ -1,6 +1,6 @@
-/* ============================
-   THEME VARIABLES
-   ============================ */
+
+   /* THEME VARIABLES */
+  
 :root {
   --primary-green: #2e7d32;
   --light-green: #e8f5e9;
@@ -13,14 +13,14 @@
 }
 
 body {
-  background-color: #ffffff;
+  background-color: var(--light-green);
   color: var(--text-dark);
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* ============================
-   NAVBAR
-   ============================ */
+
+   /* NAVBAR */
+  
 .navbar {
   background-color: #ffffff;
   border-bottom: 2px solid var(--primary-green);
@@ -50,18 +50,93 @@ body {
   color: #ffffff;
 }
 
-/* ============================
-   BUTTONS
-   ============================ */
-.btn-primary-green {
+
+   /* PAGE WRAPPER (Login / Signup) */
+  
+.custom-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--light-green);
+  padding: 20px;
+}
+
+
+   /* CARD (Login / Signup / Groups / Expenses) */
+  
+.custom-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 28px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+.custom-card:hover {
+  border-color: var(--primary-green);
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--primary-green);
+  margin-bottom: 20px;
+}
+
+.card-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+
+.custom-logo {
+  width: 90px;
+  height: auto;
+  margin-bottom: 12px;
+}
+
+
+
+   /* FORM FIELDS (Bootstrap overrides) */
+  
+.form-label {
+  display: block;
+  text-align: left;
+  margin-bottom: 6px;
+
+  color: var(--text-dark);
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  outline: none;
+  margin-bottom: 4px;
+}
+
+.form-control:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 2px var(--light-green);
+}
+
+   /* BUTTONS */
+
+.btn-brand {
   background-color: var(--primary-green);
   color: #ffffff;
   border: none;
   border-radius: 6px;
-  padding: 8px 16px;
+  padding: 10px 16px;
+  font-weight: 500;
 }
 
-.btn-primary-green:hover {
+.btn-brand:hover {
   background-color: var(--dark-green);
   color: #ffffff;
 }
@@ -78,36 +153,9 @@ body {
   background-color: var(--light-green);
 }
 
-/* ============================
-   CARDS (Groups / Expenses)
-   ============================ */
-.custom-card {
-  background-color: #ffffff;
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
 
-.custom-card:hover {
-  border-color: var(--primary-green);
-}
+   /* BALANCE INDICATORS */
 
-.card-title {
-  font-weight: 600;
-  font-size: 16px;
-  margin-bottom: 4px;
-}
-
-.card-subtitle {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-/* ============================
-   BALANCE INDICATORS
-   ============================ */
 .balance-positive {
   color: var(--primary-green);
   font-weight: 600;
@@ -130,50 +178,9 @@ body {
   padding: 12px;
 }
 
-/* ============================
-   FORMS (Login / Signup / Add Expense)
-   ============================ */
-.form-container {
-  max-width: 400px;
-  margin: 60px auto;
-  padding: 24px;
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  background-color: #ffffff;
-}
 
-.form-container h2 {
-  color: var(--primary-green);
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 14px;
-  color: var(--text-dark);
-}
-
-.form-group input {
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  outline: none;
-}
-
-.form-group input:focus {
-  border-color: var(--primary-green);
-}
-
-/* ============================
-   UTILITIES
-   ============================ */
+   /* UTILITIES */
+  
 .text-green {
   color: var(--primary-green);
 }
