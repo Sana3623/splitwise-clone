@@ -31,17 +31,17 @@ app.post('/login', (req, res) => {
       return res.status(500).json({ message: "Server error" });
     }
     if (result.length === 0) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "User Not Found" });
     }
 
-    const user = result[0];
-    const match = await bcrypt.compare(req.body.user_password, user.user_password);
+   
+    const match = await bcrypt.compare(req.body.user_password, result[0].user_password);
 
     if (!match) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    res.json({ message: "Login successful", userId: user.user_id });
+    res.json({ message: "Login successful" });
   });
 });
 

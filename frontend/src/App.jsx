@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom';
-import App1 from './app1/App1'
+import App1 from './router/App1'
 
 function App() {
 

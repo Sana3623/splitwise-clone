@@ -8,7 +8,7 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-brand-custom">
             <div className="container">
                 <Link className="navbar-brand d-flex align-items-center" to="/">
-                    <img src={logo} alt="logo" className="nav-logo" />
+                    <img src={logo} alt="logo" className="custom-logo" />
                     <span className="brand-name">SplitEase</span>
                 </Link>
 

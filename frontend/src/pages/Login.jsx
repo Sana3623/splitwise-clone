@@ -22,6 +22,11 @@ function Login() {
         console.log(result)
 
         setFormData({ user_email: "", user_password: "" })
+         if(response.status != 200){
+            alert(result.message)
+        }else{
+            alert(result.message)
+        }
     }
 
     return (

@@ -22,6 +22,11 @@ function Signup() {
         console.log(result)
 
         setFormData({ user_name: "", user_email: "", user_password: "" })
+         if(response.status != 200){
+            alert(result.message)
+        }else{
+            alert(result.message)
+        }
     }
 
     return (
@@ -32,7 +37,7 @@ function Signup() {
                     <h3 className="card-title ">SIGN UP</h3>
 
                     <div className='mb-3'>
-                        <label className='form-label'>User Name:</label>
+                        <label className='form-label'>Full Name:</label>
                         <input value={formData.user_name} type="text" name="user_name" onChange={txtBxHandler} className='form-control' />
                     </div>
                     <div className='mb-3'>

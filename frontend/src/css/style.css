@@ -3,7 +3,7 @@
   
 :root {
   --primary-green: #2e7d32;
-  --light-green: #e8f5e9;
+  --light-green: #87fa90;
   --dark-green: #1b5e20;
   --danger-red: #c62828;
   --light-red: #fdecea;
@@ -54,11 +54,12 @@ body {
    /* PAGE WRAPPER (Login / Signup) */
   
 .custom-wrapper {
-  min-height: 100vh;
+  min-height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--light-green);
+  /* background-color: var(--light-green); */
+  
   padding: 20px;
 }
 
@@ -94,9 +95,9 @@ body {
 
 
 .custom-logo {
-  width: 90px;
+  width: 120px;
   height: auto;
-  margin-bottom: 12px;
+  /* margin-bottom: 12px; */
 }
 
 
