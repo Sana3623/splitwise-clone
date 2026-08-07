@@ -4,6 +4,8 @@ import { Routes, Route } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Login from '../pages/Login'
 import Signup from '../pages/Signup'
+// import CreateGroupModal from '../components/CreateGroupModal'
+import GroupPage from '../pages/GroupPage'
 // import Dashboard from '../pages/Dashboard'
 
 function App() {
@@ -14,7 +16,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+         <Route path="/grppage" element={<GroupPage />} />
+                {/* <Route path="/dashboard" element={<Dashboard />} /> */}
       </Routes>
     </>
   );

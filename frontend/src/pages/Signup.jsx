@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import '../css/style.css'
 import logo from '../assets/spliteaselogo.svg'
+import VerifyOtp from '../components/VerifyOtp'
 
 function Signup() {
     let [formData, setFormData] = useState({ user_name: "", user_email: "", user_password: "" })
+      let [otp, setOtp] = useState(false)
 
     let txtBxHandler = (e) => {
         let { name, value } = e.target
@@ -21,16 +23,20 @@ function Signup() {
         let result = await response.json()
         console.log(result)
 
-        setFormData({ user_name: "", user_email: "", user_password: "" })
+        // setFormData({ user_name: "", user_email: "", user_password: "" })
          if(response.status != 200){
             alert(result.message)
         }else{
-            alert(result.message)
-        }
+        setOtp(true)
+        alert(result.message)
+        // don't reset formData here — VerifyOtp still needs formData.user_email
+    }
+
     }
 
     return (
-        <>
+        <>{
+             otp == false ? <>
             <div className="custom-wrapper">
                 <div className="custom-card">
                     <img src={logo} alt="logo" className="custom-logo" />
@@ -54,7 +60,8 @@ function Signup() {
 
                 </div>
             </div>
-
+            </> :  <VerifyOtp  userEmail={formData.user_email} />
+}
         </>
     )
 }

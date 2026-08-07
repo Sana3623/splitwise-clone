@@ -195,3 +195,28 @@ body {
   color: var(--text-muted);
   font-size: 14px;
 }
+
+.otp-wrapper {
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.otp-card {
+    background-color: #ffffff;
+    border: 2px solid #48f731;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.otp-title {
+    color: #212529;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}

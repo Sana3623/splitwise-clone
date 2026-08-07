@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import '../css/style.css'
+import {useNavigate} from 'react-router-dom'
 import logo from '../assets/spliteaselogo.svg'
 
 function Login() {
+
+    let navigate = useNavigate()
     let [formData, setFormData] = useState({ user_email: "", user_password: "" })
 
     let txtBxHandler = (e) => {
@@ -25,7 +28,9 @@ function Login() {
          if(response.status != 200){
             alert(result.message)
         }else{
-            alert(result.message)
+            localStorage.setItem("token",result) 
+            navigate('/grppage')
+           
         }
     }
 
