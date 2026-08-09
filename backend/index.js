@@ -12,7 +12,7 @@ app.use(express.json());
 
 let otpStorage = {}
 const saltRounds = 10
-const secretkey = "spliteasewebapplicationproject"
+
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
