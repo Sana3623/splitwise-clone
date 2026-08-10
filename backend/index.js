@@ -22,14 +22,31 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-let generateToken=(user_id,user_email,role)=>{
-    return jwt.sign({user_id,user_email,role},secretkey,{expiresIn: '1h' })
+let generateToken=(id,email)=>{
+    return jwt.sign({id,email},secretkey,{expiresIn: '1h' })
     
 }
 
-let verifyToken = (req,res)=>{
-    console.log(req.headers.authorization.split(" ")[1])
+let verifyToken = async (req, res, next) => {
+    let token = req.headers.authorization.split(" ")[1]
+    console.log("token",token)
+
+    if (!token) return res.status(401).json({ message: "User Unauthorizrd" })
+    jwt.verify(token, secretkey, function (err, decoded) {
+        if (err) return res.status(403).json({ message: "Invalid Token" })
+        else {
+            req.user=decoded
+            // console.log(decoded)
+            next()
+        }
+    });
 }
+
+// const authorizeRoles = roles => async (req,res,next) => {
+//     console.log("auth req.user",req.user,roles)
+//     if (roles.includes(req.user.role)==false) return res.status(403).json({error:"Access Denied"})
+//         next()
+// }
 
 
 app.post('/signup', async (req, res) => {
@@ -138,7 +155,24 @@ app.post('/login', (req, res) => {
     })
 })
  
+app.get('/grppage', verifyToken, (req, res) => {
+    const userId = req.user.user_id;
 
+    const sql = `
+        SELECT g.grp_id, g.grp_name
+        FROM groups_ g
+        JOIN group_members gm ON g.grp_id = gm.grp_id
+        WHERE gm.user_id = ?
+    `;
+
+    db.query(sql, [userId], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Failed to fetch groups" });
+        }
+        res.json(result);
+    });
+});
 app.post('/groups', (req, res) => {
   const { grp_name, user_id } = req.body;
   const sql1 = `INSERT INTO groups_ (grp_name, user_id) VALUES (?, ?)`
