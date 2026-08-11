@@ -155,6 +155,8 @@ app.post('/login', (req, res) => {
     })
 })
  
+
+
 app.get('/grppage', verifyToken, (req, res) => {
     const userId = req.user.user_id;
 
@@ -173,6 +175,8 @@ app.get('/grppage', verifyToken, (req, res) => {
         res.json(result);
     });
 });
+
+
 app.post('/groups', (req, res) => {
   const { grp_name, user_id } = req.body;
   const sql1 = `INSERT INTO groups_ (grp_name, user_id) VALUES (?, ?)`
