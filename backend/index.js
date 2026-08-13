@@ -23,7 +23,7 @@ const transporter = nodemailer.createTransport({
 })
 
 let generateToken=(id,email)=>{
-    return jwt.sign({id,email},secretkey,{expiresIn: '1h' })
+    return jwt.sign({id,email},process.env.JWT_SECRET,{expiresIn: '1h' })
     
 }
 
@@ -32,7 +32,7 @@ let verifyToken = async (req, res, next) => {
     console.log("token",token)
 
     if (!token) return res.status(401).json({ message: "User Unauthorizrd" })
-    jwt.verify(token, secretkey, function (err, decoded) {
+    jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
         if (err) return res.status(403).json({ message: "Invalid Token" })
         else {
             req.user=decoded
@@ -158,7 +158,7 @@ app.post('/login', (req, res) => {
 
 
 app.get('/grppage', verifyToken, (req, res) => {
-    const userId = req.user.user_id;
+    const userId = req.user.id;
 
     const sql = `
         SELECT g.grp_id, g.grp_name

@@ -83,7 +83,7 @@ function GroupPage() {
                     onClose={() => setShowModal(false)}
                     onCreate={() => {
                         setShowModal(false);
-                        getUserGroups();   // refresh the list so the new group shows up
+                        getUserGroups();   
                     }}
                 />
             )}
