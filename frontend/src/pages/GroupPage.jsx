@@ -2,36 +2,36 @@ import React, { useState, useEffect } from "react"
 import { useNavigate } from 'react-router-dom'
 import logo from '../assets/spliteaselogo.svg'
 import '../css/style.css'
-import CreateGroupModal from '../components/CreateGroupModal'
+import CreateGroup from '../components/CreateGroup'
 
 function GroupPage() {
     const navigate = useNavigate()
     const [groups, setGroups] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [showModal, setShowModal] = useState(false) 
+
+    const [showModal, setShowModal] = useState(false)
 
     const getUserDetails = async () => {
         const token = localStorage.getItem("token");
-        
-            const response = await fetch("http://localhost:5000/grppage", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
 
-            if (!response.ok) {
-                localStorage.removeItem("token")
-                navigate('/login')
-                return;
+        const response = await fetch("http://localhost:5000/grppage", {
+            headers: {
+                Authorization: `Bearer ${token}`
             }
+        });
 
-            const result = await response.json()
-            console.log(result)
-            setGroups(result)
-      
-            setLoading(false)
-        
-    };
+        if (!response.ok) {
+            localStorage.removeItem("token")
+            navigate('/login')
+            return;
+        }
+
+        const result = await response.json()
+        console.log(result)
+        setGroups(result)
+
+
+
+    }
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -43,13 +43,7 @@ function GroupPage() {
         }
     }, []);
 
-    if (loading) {
-        return <p className="text-center-muted">Loading your groups...</p>;
-    }
 
-    if (!authChecked || loading) {
-        return null;
-    }
 
     return (
         <div className="custom-wrapper" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
@@ -72,21 +66,12 @@ function GroupPage() {
 
             <button
                 className="btn-brand w-100"
-                onClick={() => setShowModal(true)}
+                onClick={() => navigate('/groups/new', { state: { userId: user.user_id, userName: user.user_name } })}
                 style={{ marginTop: '16px' }}
             >
                 + Create group
             </button>
 
-            {showModal && (
-                <CreateGroupModal
-                    onClose={() => setShowModal(false)}
-                    onCreate={() => {
-                        setShowModal(false);
-                        getUserGroups();   
-                    }}
-                />
-            )}
         </div>
     );
 }

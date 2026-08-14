@@ -37,9 +37,9 @@ function Signup() {
     return (
         <>{
              otp == false ? <>
-            <div className="custom-wrapper">
-                <div className="custom-card">
-                    <img src={logo} alt="logo" className="custom-logo" />
+            <div className="auth-wrapper">
+                <div className="glass-card">
+                    <img src={logo} alt="logo" className="glass-logo" />
                     <h3 className="card-title ">SIGN UP</h3>
 
                     <div className='mb-3'>

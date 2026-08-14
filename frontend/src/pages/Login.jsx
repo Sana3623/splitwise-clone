@@ -36,9 +36,9 @@ function Login() {
 
     return (
         <>
-            <div className="custom-wrapper">
-                <div className="custom-card">
-                    <img src={logo} alt="logo" className="custom-logo" />
+            <div className="auth-wrapper">
+                <div className="glass-card">
+                    <img src={logo} alt="logo" className="glass-logo" />
                     <h3 className="card-title ">Login</h3>
                     <div className='mb-3'>
                         <label className='form-label'>Email</label>

@@ -1,9 +1,9 @@
-
-   /* THEME VARIABLES */
-  
+/*
+   THEME VARIABLES
+   */
 :root {
   --primary-green: #2e7d32;
-  --light-green: #87fa90;
+  --light-green: #e8f5e9;
   --dark-green: #1b5e20;
   --danger-red: #c62828;
   --light-red: #fdecea;
@@ -18,9 +18,9 @@ body {
   font-family: 'Segoe UI', sans-serif;
 }
 
-
-   /* NAVBAR */
-  
+/* 
+   NAVBAR
+    */
 .navbar {
   background-color: #ffffff;
   border-bottom: 2px solid var(--primary-green);
@@ -50,22 +50,21 @@ body {
   color: #ffffff;
 }
 
-
-   /* PAGE WRAPPER (Login / Signup) */
-  
+/* 
+   PAGE WRAPPER (Login / Signup)
+    */
 .custom-wrapper {
-  min-height: 70vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background-color: var(--light-green); */
-  
+  background-color: var(--light-green);
   padding: 20px;
 }
 
-
-   /* CARD (Login / Signup / Groups / Expenses) */
-  
+/* 
+   CARD (Login / Signup / Groups / Expenses)
+    */
 .custom-card {
   background-color: #ffffff;
   border: 1px solid var(--border-color);
@@ -93,22 +92,29 @@ body {
   color: var(--text-muted);
 }
 
-
+/* 
+   LOGO
+   */
 .custom-logo {
-  width: 120px;
+  width: 90px;
   height: auto;
-  /* margin-bottom: 12px; */
+  margin-bottom: 12px;
 }
 
+.register-logo {
+  width: 90px;
+  height: auto;
+  margin-bottom: 12px;
+}
 
-
-   /* FORM FIELDS (Bootstrap overrides) */
-  
+/* 
+   FORM FIELDS (Bootstrap overrides)
+ */
 .form-label {
   display: block;
   text-align: left;
   margin-bottom: 6px;
-
+  font-size: 14px;
   color: var(--text-dark);
 }
 
@@ -126,8 +132,9 @@ body {
   box-shadow: 0 0 0 2px var(--light-green);
 }
 
-   /* BUTTONS */
-
+/* 
+   BUTTONS
+   */
 .btn-brand {
   background-color: var(--primary-green);
   color: #ffffff;
@@ -154,9 +161,9 @@ body {
   background-color: var(--light-green);
 }
 
-
-   /* BALANCE INDICATORS */
-
+/* 
+   BALANCE INDICATORS
+   */
 .balance-positive {
   color: var(--primary-green);
   font-weight: 600;
@@ -179,9 +186,9 @@ body {
   padding: 12px;
 }
 
-
-   /* UTILITIES */
-  
+/*
+   UTILITIES
+    */
 .text-green {
   color: var(--primary-green);
 }
@@ -196,27 +203,80 @@ body {
   font-size: 14px;
 }
 
-.otp-wrapper {
-    background-color: #ffffff;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* 
+   LIQUID GLASS - AUTH PAGES
+    */
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-image: url('../assets/auth-bg.png');
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
 }
 
-.otp-card {
-    background-color: #ffffff;
-    border: 2px solid #48f731;
-    border-radius: 12px;
-    padding: 2rem;
-    width: 100%;
-    max-width: 380px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  padding: 32px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow:
+    0 8px 32px rgba(46, 125, 50, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  text-align: center;
 }
 
-.otp-title {
-    color: #212529;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
+.glass-card .card-title {
+  color: var(--dark-green);
+  font-weight: 600;
+  font-size: 22px;
+  margin-bottom: 22px;
+}
+
+.glass-card .form-label {
+  color: #2c2c2a;
+  font-weight: 500;
+}
+
+.glass-card .form-control {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+}
+
+.glass-card .form-control:focus {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
+
+.glass-card .btn-brand {
+  background: rgba(46, 125, 50, 0.85);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(46, 125, 50, 0.3);
+}
+
+.glass-card .btn-brand:hover {
+  background: rgba(27, 94, 32, 0.95);
+}
+
+.glass-logo {
+  width: 70px;
+  height: auto;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 2px 6px rgba(46, 125, 50, 0.3));
 }
