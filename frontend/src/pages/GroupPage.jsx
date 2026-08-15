@@ -46,32 +46,37 @@ function GroupPage() {
 
 
     return (
-        <div className="custom-wrapper" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-            <h1 className="text-green" style={{ textAlign: 'center' }}>Your groups</h1>
+        <div className="page-bg">
+            <div className="custom-wrapper" style={{ flexDirection: 'column' }}>
 
-            {groups.length === 0 ? (
-                <p className="text-center-muted">No groups yet. Create one to get started.</p>
-            ) : (
-                groups.map((grp) => (
-                    <div
-                        key={grp.grp_id}
-                        className="custom-card"
-                        onClick={() => navigate(`/groups/${grp.grp_id}`)}
-                        style={{ cursor: 'pointer', textAlign: 'left' }}
-                    >
-                        <p className="card-title">{grp.grp_name}</p>
-                    </div>
-                ))
-            )}
+                <div className="custom-card">
 
-            <button
-                className="btn-brand w-100"
-                onClick={() => navigate('/groups/new', { state: { userId: user.user_id, userName: user.user_name } })}
-                style={{ marginTop: '16px' }}
-            >
-                + Create group
-            </button>
+                <h1 className="text-green" style={{ textAlign: 'center' }}>Your groups</h1>
 
+                {groups.length === 0 ? (
+                    <p className="text-center-muted">No groups yet. Create one to get started.</p>
+                ) : (
+                    groups.map((grp) => (
+                        <div
+                            key={grp.grp_id}
+                            className="custom-card"
+                            onClick={() => navigate(`/groups/${grp.grp_id}`)}
+                            style={{ cursor: 'pointer', textAlign: 'left' }}
+                        >
+                            <p className="card-title">{grp.grp_name}</p>
+                        </div>
+                    ))
+                )}
+
+                <button
+                    className="btn-brand w-100"
+                    onClick={() => navigate('/groups/new', { state: { userId: user.user_id, userName: user.user_name } })}
+                    style={{ marginTop: '16px' }}
+                >
+                    + Create group
+                </button>
+            </div>
+        </div>
         </div>
     );
 }

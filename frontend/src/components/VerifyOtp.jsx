@@ -23,8 +23,9 @@ let verifyHandler = async (e) => {
     }
 
     return (
-       <div className="otp-wrapper">
-            <div className="otp-card">
+        <div className="page-bg">
+            <div className="custom-wrapper">
+                <div className="custom-card">
                 <h3 className="otp-title">Enter OTP</h3>
                 <form onSubmit={verifyHandler}>
                     <div className="mb-3">
@@ -32,6 +33,7 @@ let verifyHandler = async (e) => {
                     </div>
                     <button type="submit" className="btn btn-brand w-100"> Verify </button>
                 </form>
+            </div>
             </div>
         </div>
     )

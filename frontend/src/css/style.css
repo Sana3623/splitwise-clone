@@ -1,6 +1,6 @@
-/*
+/* ============================
    THEME VARIABLES
-   */
+   ============================ */
 :root {
   --primary-green: #2e7d32;
   --light-green: #e8f5e9;
@@ -13,157 +13,185 @@
 }
 
 body {
-  background-color: var(--light-green);
+  margin: 0;
   color: var(--text-dark);
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* 
-   NAVBAR
-    */
+/* ============================
+   PAGE BACKGROUND — add this class to the outermost
+   div of every page (Login, Signup, GroupPage, etc.)
+   ============================ */
+.page-bg {
+  min-height: 100vh;
+  width: 100%;
+  background-image: url('../assets/auth-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ============================
+   NAVBAR (glass, sits on top of the bg image)
+   ============================ */
 .navbar {
-  background-color: #ffffff;
-  border-bottom: 2px solid var(--primary-green);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .navbar-brand {
-  color: var(--primary-green);
+  color: var(--dark-green);
   font-weight: bold;
 }
 
 .nav-link {
-  color: var(--primary-green) !important;
-}
-
-.nav-link:hover {
   color: var(--dark-green) !important;
 }
 
+.nav-link:hover {
+  color: var(--primary-green) !important;
+}
+
 .btn-logout {
-  background-color: var(--primary-green);
+  background: rgba(46, 125, 50, 0.85);
+  backdrop-filter: blur(6px);
   color: #ffffff;
   border: none;
 }
 
 .btn-logout:hover {
-  background-color: var(--dark-green);
+  background: rgba(27, 94, 32, 0.95);
   color: #ffffff;
 }
 
-/* 
-   PAGE WRAPPER (Login / Signup)
-    */
-.custom-wrapper {
-  min-height: 100vh;
+/* ============================
+   CONTENT WRAPPER (centers cards inside .page-bg)
+   ============================ */
+.custom-wrapper,
+.auth-wrapper {
+  min-height: calc(100vh - 60px);
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--light-green);
   padding: 20px;
 }
 
-/* 
-   CARD (Login / Signup / Groups / Expenses)
-    */
-.custom-card {
-  background-color: #ffffff;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+/* ============================
+   GLASS CARD (used everywhere — login, signup, groups, expenses)
+   ============================ */
+.custom-card,
+.glass-card {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
   padding: 28px;
   width: 100%;
-  max-width: 380px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  text-align: center;
+  max-width: 420px;
+  box-shadow:
+    0 8px 32px rgba(46, 125, 50, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  text-align: left;
+  margin-bottom: 14px;
 }
 
-.custom-card:hover {
-  border-color: var(--primary-green);
+.custom-card:hover,
+.glass-card:hover {
+  border-color: rgba(46, 125, 50, 0.5);
 }
 
 .card-title {
   font-weight: 600;
   font-size: 20px;
-  color: var(--primary-green);
-  margin-bottom: 20px;
+  color: var(--dark-green);
+  margin-bottom: 12px;
+  text-align: center;
 }
 
 .card-subtitle {
   font-size: 13px;
-  color: var(--text-muted);
+  color: #3d3d3a;
 }
 
-/* 
+/* ============================
    LOGO
-   */
-.custom-logo {
-  width: 90px;
+   ============================ */
+.custom-logo,
+.glass-logo {
+  width: 80px;
   height: auto;
-  margin-bottom: 12px;
+  display: block;
+  margin: 0 auto 12px;
+  filter: drop-shadow(0 2px 6px rgba(46, 125, 50, 0.3));
 }
 
-.register-logo {
-  width: 90px;
-  height: auto;
-  margin-bottom: 12px;
-}
-
-/* 
-   FORM FIELDS (Bootstrap overrides)
- */
+/* ============================
+   FORM FIELDS
+   ============================ */
 .form-label {
   display: block;
   text-align: left;
   margin-bottom: 6px;
   font-size: 14px;
   color: var(--text-dark);
+  font-weight: 500;
 }
 
 .form-control {
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
   outline: none;
   margin-bottom: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(6px);
 }
 
 .form-control:focus {
+  background: rgba(255, 255, 255, 0.75);
   border-color: var(--primary-green);
-  box-shadow: 0 0 0 2px var(--light-green);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
 }
 
-/* 
+/* ============================
    BUTTONS
-   */
+   ============================ */
 .btn-brand {
-  background-color: var(--primary-green);
+  background: rgba(46, 125, 50, 0.85);
+  backdrop-filter: blur(6px);
   color: #ffffff;
-  border: none;
-  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
   padding: 10px 16px;
   font-weight: 500;
+  box-shadow: 0 4px 14px rgba(46, 125, 50, 0.3);
 }
 
 .btn-brand:hover {
-  background-color: var(--dark-green);
+  background: rgba(27, 94, 32, 0.95);
   color: #ffffff;
 }
 
 .btn-outline-green {
-  background-color: transparent;
-  color: var(--primary-green);
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(6px);
+  color: var(--dark-green);
   border: 1px solid var(--primary-green);
-  border-radius: 6px;
+  border-radius: 10px;
   padding: 8px 16px;
 }
 
 .btn-outline-green:hover {
-  background-color: var(--light-green);
+  background: rgba(232, 245, 233, 0.6);
 }
 
-/* 
+/* ============================
    BALANCE INDICATORS
-   */
+   ============================ */
 .balance-positive {
   color: var(--primary-green);
   font-weight: 600;
@@ -175,108 +203,32 @@ body {
 }
 
 .balance-card-positive {
-  background-color: var(--light-green);
+  background: rgba(232, 245, 233, 0.6);
+  backdrop-filter: blur(6px);
   border-radius: 8px;
   padding: 12px;
 }
 
 .balance-card-negative {
-  background-color: var(--light-red);
+  background: rgba(253, 236, 234, 0.6);
+  backdrop-filter: blur(6px);
   border-radius: 8px;
   padding: 12px;
 }
 
-/*
+/* ============================
    UTILITIES
-    */
+   ============================ */
 .text-green {
   color: var(--primary-green);
 }
 
 .bg-light-green {
-  background-color: var(--light-green);
+  background: rgba(232, 245, 233, 0.6);
 }
 
 .text-center-muted {
   text-align: center;
   color: var(--text-muted);
   font-size: 14px;
-}
-
-/* 
-   LIQUID GLASS - AUTH PAGES
-    */
-.auth-wrapper {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background-image: url('../assets/auth-bg.png');
-
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-
-}
-
-
-
-.glass-card {
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 20px;
-  padding: 32px;
-  width: 100%;
-  max-width: 380px;
-  box-shadow:
-    0 8px 32px rgba(46, 125, 50, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 0.7);
-  text-align: center;
-}
-
-.glass-card .card-title {
-  color: var(--dark-green);
-  font-weight: 600;
-  font-size: 22px;
-  margin-bottom: 22px;
-}
-
-.glass-card .form-label {
-  color: #2c2c2a;
-  font-weight: 500;
-}
-
-.glass-card .form-control {
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
-}
-
-.glass-card .form-control:focus {
-  background: rgba(255, 255, 255, 0.75);
-  border-color: var(--primary-green);
-  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
-}
-
-.glass-card .btn-brand {
-  background: rgba(46, 125, 50, 0.85);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-  box-shadow: 0 4px 14px rgba(46, 125, 50, 0.3);
-}
-
-.glass-card .btn-brand:hover {
-  background: rgba(27, 94, 32, 0.95);
-}
-
-.glass-logo {
-  width: 70px;
-  height: auto;
-  margin-bottom: 8px;
-  filter: drop-shadow(0 2px 6px rgba(46, 125, 50, 0.3));
 }

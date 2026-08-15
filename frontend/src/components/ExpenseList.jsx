@@ -18,7 +18,7 @@ function ExpenseList() {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     useEffect(() => {
         fetchExpenses();
@@ -29,22 +29,27 @@ function ExpenseList() {
     }
 
     return (
-        <div className="custom-wrapper" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-            <h3 className="card-title">Expenses</h3>
 
-            {expenses.length === 0 ? (
-                <p className="text-center-muted">No expenses added yet.</p>
-            ) : (
-                expenses.map((exp) => (
-                    <div key={exp.exp_id} className="custom-card" style={{ textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div>
-                            <p className="card-title" style={{ marginBottom: '4px' }}>{exp.descri}</p>
-                            <p className="card-subtitle">Paid by {exp.paid_by}</p>
+        <div className="page-bg">
+            <div className="custom-wrapper" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                <div className="custom-card"></div>
+
+                <h3 className="card-title">Expenses</h3>
+
+                {expenses.length === 0 ? (
+                    <p className="text-center-muted">No expenses added yet.</p>
+                ) : (
+                    expenses.map((exp) => (
+                        <div key={exp.exp_id} className="custom-card" style={{ textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div>
+                                <p className="card-title" style={{ marginBottom: '4px' }}>{exp.descri}</p>
+                                <p className="card-subtitle">Paid by {exp.paid_by}</p>
+                            </div>
+                            <p className="balance-positive" style={{ fontSize: '16px' }}>₹{exp.amount}</p>
                         </div>
-                        <p className="balance-positive" style={{ fontSize: '16px' }}>₹{exp.amount}</p>
-                    </div>
-                ))
-            )}
+                    ))
+                )}
+            </div>
         </div>
     );
 }

@@ -16,11 +16,11 @@ function CreateGroup() {
             setMembers([...members, memberInput.trim()]);
             setMemberInput('');
         }
-    };
+    }
 
     const removeMember = (name) => {
         setMembers(members.filter(m => m !== name));
-    };
+    }
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -29,16 +29,17 @@ function CreateGroup() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ grp_name: groupName, members: members, user_id: userId })
-        });
+        })
         const result = await response.json();
         console.log(result);
 
         navigate('/groups');
-    };
+    }
 
     return (
-        <div className="custom-wrapper">
-            <div className="custom-card">
+        <div className="page-bg">
+            <div className="custom-wrapper">
+                <div className="custom-card">
                 <h3 className="card-title">Create a group</h3>
 
                 <div className="mb-3">
@@ -73,6 +74,7 @@ function CreateGroup() {
                     <button type="button" onClick={submitHandler} className="btn-brand" style={{ flex: 1 }}>Create group</button>
                 </div>
             </div>
+        </div>
         </div>
     );
 }
