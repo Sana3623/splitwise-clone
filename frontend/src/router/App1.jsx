@@ -4,9 +4,9 @@ import { Routes, Route } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Login from '../pages/Login'
 import Signup from '../pages/Signup'
-import CreateGroup from '../components/CreateGroup'
-import GroupPage from '../pages/GroupPage'
-// import Dashboard from '../pages/Dashboard'
+import Home from '../pages/Home'
+
+
 
 function App() {
 
@@ -16,8 +16,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/grppage" element={<GroupPage />} />
-        <Route path="/groups/new" element={<CreateGroup />} />
+        <Route path='/' element={<Home />}/>
       </Routes>
     </>
   );

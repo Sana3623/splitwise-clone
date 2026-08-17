@@ -157,41 +157,6 @@ app.post('/login', (req, res) => {
  
 
 
-app.get('/grppage', verifyToken, (req, res) => {
-    const userId = req.user.id;
-
-    const sql = `
-        SELECT g.grp_id, g.grp_name
-        FROM groups_ g
-        JOIN group_members gm ON g.grp_id = gm.grp_id
-        WHERE gm.user_id = ?
-    `
-
-    db.query(sql, [userId], (err, result) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ message: "Failed to fetch groups" })
-        }
-        res.json(result)
-    })
-})
-
-
-app.post('/groups', (req, res) => {
-  const { grp_name, user_id } = req.body;
-  const sql1 = `INSERT INTO groups_ (grp_name, user_id) VALUES (?, ?)`
-  db.query(sql1, [grp_name, user_id], (err, result) => {
-    if (err) return res.status(500).json({ message: "Group creation failed" })
-
-    const grpId = result.insertId; // auto-generated ID from the INSERT
-    const sql2 = `INSERT INTO group_members (grp_id, user_id) VALUES (?, ?)`
-    db.query(sql2, [grpId, user_id], (err2) => {
-      if (err2) return res.status(500).json({ message: "Member insert failed" })
-      res.json({ message: "Group created", grpId })
-    })
-  })
-})
-
 app.listen(5000, (err) => {
     if (err) console.log(err)
     else console.log("5000")
