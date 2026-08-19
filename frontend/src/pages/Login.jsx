@@ -29,7 +29,7 @@ function Login() {
             alert(result.message)
         } else {
             localStorage.setItem("token", result)
-            navigate('/grppage')
+            navigate('/groups')
 
         }
     }

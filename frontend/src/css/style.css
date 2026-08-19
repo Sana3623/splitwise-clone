@@ -1,6 +1,6 @@
-/* ============================
+/*
    THEME VARIABLES
-   ============================ */
+   */
 :root {
   --primary-green: #2e7d32;
   --light-green: #e8f5e9;
@@ -18,10 +18,10 @@ body {
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* ============================
-   PAGE BACKGROUND — add this class to the outermost
-   div of every page (Login, Signup, GroupPage, etc.)
-   ============================ */
+/* 
+   PAGE BACKGROUND — 
+  
+   */
 .page-bg {
   min-height: 100vh;
   width: 100%;
@@ -31,9 +31,9 @@ body {
   background-repeat: no-repeat;
 }
 
-/* ============================
-   NAVBAR (glass, sits on top of the bg image)
-   ============================ */
+/* 
+   NAVBAR 
+   */
 .navbar {
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(16px) saturate(180%);
@@ -66,9 +66,9 @@ body {
   color: #ffffff;
 }
 
-/* ============================
-   CONTENT WRAPPER (centers cards inside .page-bg)
-   ============================ */
+/* 
+   CONTENT WRAPPER 
+    */
 .custom-wrapper,
 .auth-wrapper {
   min-height: calc(100vh - 60px);
@@ -78,9 +78,9 @@ body {
   padding: 20px;
 }
 
-/* ============================
-   GLASS CARD (used everywhere — login, signup, groups, expenses)
-   ============================ */
+/* 
+   GLASS CARD 
+  */
 .custom-card,
 .glass-card {
   background: rgba(255, 255, 255, 0.4);
@@ -116,9 +116,9 @@ body {
   color: #3d3d3a;
 }
 
-/* ============================
+/*
    LOGO
-   ============================ */
+   */
 .custom-logo,
 .glass-logo {
   width: 80px;
@@ -128,9 +128,9 @@ body {
   filter: drop-shadow(0 2px 6px rgba(46, 125, 50, 0.3));
 }
 
-/* ============================
+/* 
    FORM FIELDS
-   ============================ */
+   */
 .form-label {
   display: block;
   text-align: left;
@@ -157,9 +157,9 @@ body {
   box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
 }
 
-/* ============================
+/* 
    BUTTONS
-   ============================ */
+  */
 .btn-brand {
   background: rgba(46, 125, 50, 0.85);
   backdrop-filter: blur(6px);
@@ -189,9 +189,9 @@ body {
   background: rgba(232, 245, 233, 0.6);
 }
 
-/* ============================
+/*
    BALANCE INDICATORS
-   ============================ */
+   */
 .balance-positive {
   color: var(--primary-green);
   font-weight: 600;
@@ -216,9 +216,43 @@ body {
   padding: 12px;
 }
 
-/* ============================
+/*
+   LAYOUT UTILITIES
+    */
+.wrapper-column {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.text-center-heading {
+  text-align: center;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.card-title-left {
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+.back-btn {
+  width: fit-content;
+  margin-bottom: 12px;
+}
+
+.mt-16 {
+  margin-top: 16px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+/*
    UTILITIES
-   ============================ */
+   */
 .text-green {
   color: var(--primary-green);
 }
@@ -231,4 +265,37 @@ body {
   text-align: center;
   color: var(--text-muted);
   font-size: 14px;
+}
+
+chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+ 
+.member-chip {
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+ 
+.chip-remove-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+}
+ 
+.mt-8 {
+  margin-top: 8px;
+}
+ 
+.btn-row {
+  display: flex;
+  gap: 10px;
+}
+ 
+.btn-flex {
+  flex: 1;
 }

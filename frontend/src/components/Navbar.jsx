@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import  '../css/style.css'
+import '../css/style.css'
 import logo from '../assets/spliteaselogo.svg'
 
 function Navbar() {
-  return (
-    <nav className="navbar navbar-expand-lg navbar-brand-custom">
+    return (
+        <nav className="navbar navbar-expand-lg navbar-brand-custom">
             <div className="container">
                 <Link className="navbar-brand d-flex align-items-center" to="/">
                     <img src={logo} alt="logo" className="custom-logo" />
@@ -21,20 +21,26 @@ function Navbar() {
                         <li className="nav-item">
                             <Link className="nav-link" to="/">Home</Link>
                         </li>
-                        
-                         <li className="nav-item">
+
+                        <li className="nav-item">
                             <Link className="nav-link" to="/login">Login</Link>
                         </li>
-                          <li className="nav-item">
+                        <li className="nav-item">
                             <Link className="nav-link" to="/signup">Sign Up</Link>
                         </li>
-                        
+
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/groups">Groups Page</Link>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-  )
+    )
 }
 
 export default Navbar
