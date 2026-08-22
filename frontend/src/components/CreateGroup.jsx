@@ -24,7 +24,7 @@ function CreateGroup() {
 
     const submitHandler = async () => {
    
-
+        console.log("userId being sent:", userId)
         const response = await fetch("http://localhost:5000/creategrp", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

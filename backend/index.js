@@ -22,14 +22,14 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-let generateToken=(id,email)=>{
-    return jwt.sign({id,email},process.env.JWT_SECRET,{expiresIn: '1h' })
+let generateToken=(id,email,role)=>{
+    return jwt.sign({id,email,role},process.env.JWT_SECRET,{expiresIn: '1h' })
     
 }
 
 let verifyToken = async (req, res, next) => {
     let token = req.headers.authorization.split(" ")[1]
-    console.log("token",token)
+    //console.log("token",token)
 
     if (!token) return res.status(401).json({ message: "User Unauthorizrd" })
     jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
@@ -199,7 +199,7 @@ app.get('/groups', verifyToken, (req, res) => {
 })
 
 
-app.post('/groups', (req, res) => {
+app.post('/creategrp', (req, res) => {
   const { grp_name, user_id } = req.body
   const sql1 = `INSERT INTO groups_ (grp_name, user_id) VALUES (?, ?)`
   db.query(sql1, [grp_name, user_id], (err, result) => {
