@@ -28,9 +28,9 @@ function Login() {
         if (response.status != 200) {
             alert(result.message)
         } else {
-            localStorage.setItem("token", result)
+            localStorage.setItem("token", result.token)
+            localStorage.setItem("userId", result.user_id)
             navigate('/groups')
-
         }
     }
 
@@ -40,22 +40,22 @@ function Login() {
                 <div className="custom-wrapper">
                     <div className="custom-card">
 
-                    
-                            <img src={logo} alt="logo" className="glass-logo" />
-                            <h3 className="card-title ">Login</h3>
-                            <div className='mb-3'>
-                                <label className='form-label'>Email</label>
-                                <input value={formData.user_email} type="email" name="user_email" onChange={txtBxHandler} className='form-control' />
-                            </div>
-                            <div className='mb-3'>
-                                <label className='form-label'> Password</label>
-                                <input value={formData.user_password} type="password" name="user_password" onChange={txtBxHandler} className='form-control' />
-                            </div>
 
-                            <button type='submit' onClick={submitHandler} className="btn btn-brand w-100 btn-outline-green">Submit</button>
+                        <img src={logo} alt="logo" className="glass-logo" />
+                        <h3 className="card-title ">Login</h3>
+                        <div className='mb-3'>
+                            <label className='form-label'>Email</label>
+                            <input value={formData.user_email} type="email" name="user_email" onChange={txtBxHandler} className='form-control' />
                         </div>
+                        <div className='mb-3'>
+                            <label className='form-label'> Password</label>
+                            <input value={formData.user_password} type="password" name="user_password" onChange={txtBxHandler} className='form-control' />
+                        </div>
+
+                        <button type='submit' onClick={submitHandler} className="btn btn-brand w-100 btn-outline-green">Submit</button>
                     </div>
-               
+                </div>
+
             </div>
         </>
     )

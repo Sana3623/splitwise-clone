@@ -28,22 +28,21 @@ let generateToken=(id,email,role)=>{
 }
 
 let verifyToken = async (req, res, next) => {
-    let token = req.headers.authorization.split(" ")[1]
-    //console.log("token",token)
+    const authHeader = req.headers.authorization
+    if (!authHeader) return res.status(401).json({ message: "User Unauthorized" })
 
-    if (!token) return res.status(401).json({ message: "User Unauthorizrd" })
+    const token = authHeader.split(" ")[1]
+    if (!token) return res.status(401).json({ message: "User Unauthorized" })
+
     jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
         if (err) return res.status(403).json({ message: "Invalid Token" })
-        else {
-            req.user=decoded
-            // console.log(decoded)
-            next()
-        }
+        req.user = decoded
+        next()
     })
 }
 
 const authorizeRoles = roles => async (req,res,next) => {
-    //console.log("auth req.user",req.user,roles)
+    
     if (roles.includes(req.user.role)==false) return res.status(403).json({error:"Access Denied"})
         next()
 }
@@ -83,7 +82,7 @@ app.post('/signup', async (req, res) => {
 })
 
 app.post('/verifyotp', (req, res) => {
-     //console.log("Full req.body:", req.body)
+    
      
     const { userOtp, userEmail } = req.body
      
@@ -113,7 +112,7 @@ app.post('/verifyotp', (req, res) => {
                     return res.status(500).json({ message: "Insert failed" })
                 }
                 return res.status(201).json({ message: "User registered successfully" })
-                console.log("true")
+                
             })
         })
     } else {
@@ -123,34 +122,25 @@ app.post('/verifyotp', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-
-   const { user_email, user_password } = req.body
-
+    const { user_email, user_password } = req.body
     const sql = 'SELECT * FROM users WHERE user_email = ?'
 
     db.query(sql, [user_email], async (err, result) => {
         if (err) {
             console.log(err)
             return res.status(500).json({ message: 'Server error' })
-        } else {
-            if (result.length == 0) {
-                return res.status(404).json({ message: "User Not Found " })
-            }
-            else {
-
-
-                let op = await bcrypt.compare(user_password, result[0].user_password)
-                if (op) {
-                 let token= await generateToken(result[0].user_id,result[0].user_email)
-                 return res.status(200).json(token)
-                    
-                } else {
-                    return res.status(400).json({ message: "Incorrect password" })
-                }
-            }
+        }
+        if (result.length == 0) {
+            return res.status(404).json({ message: "User Not Found" })
         }
 
-
+        let op = await bcrypt.compare(user_password, result[0].user_password)
+        if (op) {
+            let token = generateToken(result[0].user_id, result[0].user_email, 'user')
+            return res.status(200).json({ token, user_id: result[0].user_id })
+        } else {
+            return res.status(400).json({ message: "Incorrect password" })
+        }
     })
 })
  
@@ -199,19 +189,39 @@ app.get('/groups', verifyToken, (req, res) => {
 })
 
 
-app.post('/creategrp', (req, res) => {
-  const { grp_name, user_id } = req.body
-  const sql1 = `INSERT INTO groups_ (grp_name, user_id) VALUES (?, ?)`
-  db.query(sql1, [grp_name, user_id], (err, result) => {
-    if (err) return res.status(500).json({ message: "Group creation failed" })
+app.post('/creategrp', verifyToken, async (req, res) => {
+    const { grp_name, members } = req.body
+    const userId = req.user.id   // from the verified token, not the request body
 
-    const grpId = result.insertId
-    const sql2 = `INSERT INTO group_members (grp_id, user_id) VALUES (?, ?)`
-    db.query(sql2, [grpId, user_id], (err2) => {
-      if (err2) return res.status(500).json({ message: "Member insert failed" })
-      res.json({ message: "Group created", grpId })
+    const sql1 = `INSERT INTO groups_ (grp_name, user_id) VALUES (?, ?)`
+    db.query(sql1, [grp_name, userId], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ message: "Group creation failed" })
+        }
+
+        const grpId = result.insertId
+        const sql2 = `INSERT INTO group_members (grp_id, user_id) VALUES (?, ?)`
+        db.query(sql2, [grpId, userId], async (err2) => {
+            if (err2) {
+                console.log(err2)
+                return res.status(500).json({ message: "Member insert failed" })
+            }
+
+            for (const email of (members || [])) {
+                const [userRows] = await db.promise().query(
+                    `SELECT user_id FROM users WHERE user_email = ?`, [email]
+                )
+                if (userRows.length === 0) continue
+                await db.promise().query(
+                    `INSERT INTO group_members (grp_id, user_id) VALUES (?, ?)`,
+                    [grpId, userRows[0].user_id]
+                )
+            }
+
+            res.json({ message: "Group created", grpId })
+        })
     })
-  })
 })
 
 
