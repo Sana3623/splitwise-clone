@@ -6,13 +6,13 @@ import '../css/style.css'
 function Home() {
     const navigate = useNavigate()
 
-
-    useEffect(() => {
+      useEffect(() => {
         const token = localStorage.getItem("token")
         if (token) {
             navigate('/groups')
         }
     }, [])
+  
 
     return (
         <div className="page-bg">

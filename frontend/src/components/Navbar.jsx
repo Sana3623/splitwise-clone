@@ -28,13 +28,13 @@ function Navbar() {
                         <li className="nav-item">
                             <Link className="nav-link" to="/signup">Sign Up</Link>
                         </li>
-
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/dashboard">Dashboard</Link>
-                        </li>
                         <li className="nav-item">
                             <Link className="nav-link" to="/groups">Groups Page</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                        </li>
+
                     </ul>
                 </div>
             </div>
