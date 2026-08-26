@@ -22,7 +22,7 @@ function App() {
         <Route path="/groups" element={<GroupPage />} />
         <Route path="/groups/new" element={<CreateGroup />} />
         <Route path="/groups/:grpId" element={<GroupDetails />} />
-        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+       
       </Routes>
     </>
   );

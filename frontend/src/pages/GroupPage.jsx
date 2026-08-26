@@ -4,45 +4,45 @@ import GroupList from '../components/GroupList'
 import '../css/style.css'
 
 function GroupPage() {
-    const navigate = useNavigate();
-    const [groups, setGroups] = useState([]);
-    const [authChecked, setAuthChecked] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate()
+    const [groups, setGroups] = useState([])
+    const [authChecked, setAuthChecked] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const getUserGroups = async () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token")
         try {
             const response = await fetch("http://localhost:5000/groups", {
                 headers: { Authorization: `Bearer ${token}` }
-            });
+            })
 
             if (!response.ok) {
-                localStorage.removeItem("token");
-                navigate('/login');
-                return;
+                localStorage.removeItem("token")
+                navigate('/login')
+                return
             }
 
-            const result = await response.json();
-            setGroups(result);
+            const result = await response.json()
+            setGroups(result)
         } catch (err) {
-            console.log(err);
+            console.log(err)
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    };
+    }
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token")
         if (token == null) {
-            navigate('/login');
-            return;
+            navigate('/login')
+            return
         }
-        setAuthChecked(true);
-        getUserGroups();
-    }, []);
+        setAuthChecked(true)
+        getUserGroups()
+    }, [])
 
     if (!authChecked || loading) {
-        return null;
+        return null
     }
 
     return (
