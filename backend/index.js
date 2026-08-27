@@ -250,6 +250,55 @@ app.get('/groups/:grpId', verifyToken, (req, res) => {
         })
     })
 })
+
+app.get('/dashboard-summary', verifyToken, (req, res) => {
+    const userId = req.user.id
+
+    const sql = `
+        SELECT 
+            g.grp_id, 
+            g.grp_name,
+            COALESCE(paid.total_paid, 0) - COALESCE(owed.total_owed, 0) AS net_balance
+        FROM groups_ g
+        JOIN group_members gm ON g.grp_id = gm.grp_id AND gm.user_id = ?
+        LEFT JOIN (
+            SELECT grp_id, SUM(amount) AS total_paid 
+            FROM expenses WHERE user_id = ? GROUP BY grp_id
+        ) paid ON paid.grp_id = g.grp_id
+        LEFT JOIN (
+            SELECT e.grp_id, SUM(es.amount_owed) AS total_owed
+            FROM expenses_splits es
+            JOIN expenses e ON es.exp_id = e.exp_id
+            WHERE es.user_id = ?
+            GROUP BY e.grp_id
+        ) owed ON owed.grp_id = g.grp_id
+    `
+
+    db.query(sql, [userId, userId, userId], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ message: "Failed to fetch dashboard summary" })
+        }
+        res.json(result)
+    })
+})
+
+app.get('/admin/stats', verifyToken, authorizeRoles(['admin']), (req, res) => {
+    const sql = `
+        SELECT 
+            (SELECT COUNT(*) FROM users) AS total_users,
+            (SELECT COUNT(*) FROM groups_) AS total_groups,
+            (SELECT COUNT(*) FROM expenses) AS total_expenses,
+            (SELECT COALESCE(SUM(amount), 0) FROM expenses) AS total_amount
+    `
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ message: "Failed to fetch stats" })
+        }
+        res.json(result[0])
+    })
+})
 app.listen(5000, (err) => {
     if (err) console.log(err)
     else console.log("5000")
