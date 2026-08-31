@@ -7,7 +7,7 @@ function GroupList({ groups, onGroupClick }) {
     }
 
     return (
-        <div>
+        <div className="group-grid">
             {groups.map((grp) => (
                 <GroupCard
                     key={grp.grp_id}

@@ -191,7 +191,7 @@ app.get('/groups', verifyToken, (req, res) => {
 
 app.post('/creategrp', verifyToken, async (req, res) => {
     const { grp_name, members } = req.body
-    const userId = req.user.id   // from the verified token, not the request body
+    const userId = req.user.id
 
     const sql1 = `INSERT INTO groups_ (grp_name, user_id) VALUES (?, ?)`
     db.query(sql1, [grp_name, userId], (err, result) => {
@@ -208,18 +208,27 @@ app.post('/creategrp', verifyToken, async (req, res) => {
                 return res.status(500).json({ message: "Member insert failed" })
             }
 
+            const notFound = []
+
             for (const email of (members || [])) {
                 const [userRows] = await db.promise().query(
                     `SELECT user_id FROM users WHERE user_email = ?`, [email]
                 )
-                if (userRows.length === 0) continue
+                if (userRows.length === 0) {
+                    notFound.push(email)
+                    continue
+                }
                 await db.promise().query(
                     `INSERT INTO group_members (grp_id, user_id) VALUES (?, ?)`,
                     [grpId, userRows[0].user_id]
                 )
             }
 
-            res.json({ message: "Group created", grpId })
+            res.json({
+                message: "Group created",
+                grpId,
+                notFound   // emails that weren't registered, sent back to the frontend
+            })
         })
     })
 })
@@ -227,6 +236,14 @@ app.post('/creategrp', verifyToken, async (req, res) => {
 
 app.get('/groups/:grpId', verifyToken, (req, res) => {
     const { grpId } = req.params
+     const userId = req.user.id;
+
+    const checkMembership = `SELECT * FROM group_members WHERE grp_id = ? AND user_id = ?`;
+    db.query(checkMembership, [grpId, userId], (err, memberCheck) => {
+        if (err) return res.status(500).json({ message: "Server error" });
+        if (memberCheck.length === 0) {
+            return res.status(403).json({ message: "You are not a member of this group" });
+        }
 
     const groupSql = `SELECT grp_id, grp_name FROM groups_ WHERE grp_id = ?`
     const membersSql = `
@@ -249,6 +266,7 @@ app.get('/groups/:grpId', verifyToken, (req, res) => {
             })
         })
     })
+})
 })
 
 app.get('/dashboard-summary', verifyToken, (req, res) => {
@@ -299,6 +317,66 @@ app.get('/admin/stats', verifyToken, authorizeRoles(['admin']), (req, res) => {
         res.json(result[0])
     })
 })
+
+
+app.post('/settle', verifyToken, (req, res) => {
+    const { grp_id, paid_to, amount } = req.body
+    const paidBy = req.user.id
+
+    const sql = `INSERT INTO settlements (grp_id, paid_by, paid_to, amount) VALUES (?, ?, ?, ?)`
+    db.query(sql, [grp_id, paidBy, paid_to, amount], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ message: "Settlement failed" })
+        }
+        res.json({ message: "Settled up" })
+    })
+})
+
+
+app.get('/groups/:grpId/balances', verifyToken, (req, res) => {
+    const { grpId } = req.params;
+
+    const sql = `
+        SELECT 
+            u.user_id, 
+            u.user_name,
+            COALESCE(paid.total_paid, 0) 
+              - COALESCE(owed.total_owed, 0)
+              + COALESCE(settled_paid.total, 0)
+              - COALESCE(settled_received.total, 0) AS net_balance
+        FROM group_members gm
+        JOIN users u ON gm.user_id = u.user_id
+        LEFT JOIN (
+            SELECT user_id, SUM(amount) AS total_paid 
+            FROM expenses WHERE grp_id = ? GROUP BY user_id
+        ) paid ON paid.user_id = u.user_id
+        LEFT JOIN (
+            SELECT es.user_id, SUM(es.amount_owed) AS total_owed
+            FROM expenses_splits es
+            JOIN expenses e ON es.exp_id = e.exp_id
+            WHERE e.grp_id = ?
+            GROUP BY es.user_id
+        ) owed ON owed.user_id = u.user_id
+        LEFT JOIN (
+            SELECT paid_by, SUM(amount) AS total
+            FROM settlements WHERE grp_id = ? GROUP BY paid_by
+        ) settled_paid ON settled_paid.paid_by = u.user_id
+        LEFT JOIN (
+            SELECT paid_to, SUM(amount) AS total
+            FROM settlements WHERE grp_id = ? GROUP BY paid_to
+        ) settled_received ON settled_received.paid_to = u.user_id
+        WHERE gm.grp_id = ?
+    `;
+
+    db.query(sql, [grpId, grpId, grpId, grpId, grpId], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Failed to calculate balances" });
+        }
+        res.json(result);
+    });
+});
 app.listen(5000, (err) => {
     if (err) console.log(err)
     else console.log("5000")

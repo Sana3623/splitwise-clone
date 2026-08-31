@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ExpenseList from '../components/ExpenseList'
+import BalanceSummary from './BalanceSummary'
+import AddExpenseForm from './AddExpenseForm'
 import '../css/style.css'
 
 function GroupDetails() {
@@ -53,8 +55,8 @@ function GroupDetails() {
                         {members.length} member{members.length !== 1 ? 's' : ''}: {members.map(m => m.user_name).join(', ')}
                     </p>
                 </div>
-
-                {/* AddExpenseForm and BalanceSummary will go here once built */}
+                <AddExpenseForm grpId={grpId} members={members} onExpenseAdded={fetchGroupDetails} />
+                <BalanceSummary grpId={grpId} members={members} />
 
                 <ExpenseList grpId={grpId} />
             </div>

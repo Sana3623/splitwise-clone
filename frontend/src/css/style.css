@@ -1,3 +1,6 @@
+/* ============================
+   THEME VARIABLES
+   ============================ */
 :root {
   --primary-green: #2e7d32;
   --light-green: #e8f5e9;
@@ -6,7 +9,9 @@
   --light-red: #fdecea;
   --text-dark: #212121;
   --text-muted: #6c757d;
-  --border-color: #dcdcdc;
+  --border-color: #e0e0e0;
+  --surface: #ffffff;
+  --page-bg-color: #f4f9f4;
 }
 
 body {
@@ -15,22 +20,21 @@ body {
   font-family: 'Segoe UI', sans-serif;
 }
 
-
+/* ============================
+   PAGE BACKGROUND — flat, no image, no blur
+   ============================ */
 .page-bg {
   min-height: 100vh;
   width: 100%;
-  background-image: url('../assets/auth-bg.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: var(--page-bg-color);
 }
 
-
+/* ============================
+   NAVBAR — flat white
+   ============================ */
 .navbar {
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .navbar-brand {
@@ -47,20 +51,19 @@ body {
 }
 
 .btn-logout {
-  background: rgba(46, 125, 50, 0.85);
-  backdrop-filter: blur(6px);
+  background: var(--primary-green);
   color: #ffffff;
   border: none;
 }
 
 .btn-logout:hover {
-  background: rgba(27, 94, 32, 0.95);
+  background: var(--dark-green);
   color: #ffffff;
 }
 
-
- 
-   
+/* ============================
+   CONTENT WRAPPER
+   ============================ */
 .custom-wrapper,
 .auth-wrapper {
   min-height: calc(100vh - 60px);
@@ -70,29 +73,25 @@ body {
   padding: 20px;
 }
 
-
-  
-   
+/* ============================
+   CARD — flat white, subtle border + shadow
+   ============================ */
 .custom-card,
 .glass-card {
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 20px;
-  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 24px;
   width: 100%;
   max-width: 420px;
-  box-shadow:
-    0 8px 32px rgba(46, 125, 50, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   text-align: left;
   margin-bottom: 14px;
 }
 
 .custom-card:hover,
 .glass-card:hover {
-  border-color: rgba(46, 125, 50, 0.5);
+  border-color: var(--primary-green);
 }
 
 .card-title {
@@ -105,24 +104,23 @@ body {
 
 .card-subtitle {
   font-size: 13px;
-  color: #3d3d3a;
+  color: var(--text-muted);
 }
 
-
-  
-   
+/* ============================
+   LOGO
+   ============================ */
 .custom-logo,
 .glass-logo {
   width: 80px;
   height: auto;
   display: block;
   margin: 0 auto 12px;
-  filter: drop-shadow(0 2px 6px rgba(46, 125, 50, 0.3));
 }
 
-
-
-   
+/* ============================
+   FORM FIELDS
+   ============================ */
 .form-label {
   display: block;
   text-align: left;
@@ -135,55 +133,50 @@ body {
 .form-control {
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   outline: none;
   margin-bottom: 4px;
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(6px);
+  background: var(--surface);
 }
 
 .form-control:focus {
-  background: rgba(255, 255, 255, 0.75);
   border-color: var(--primary-green);
-  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
 }
 
-
-  
-   
+/* ============================
+   BUTTONS
+   ============================ */
 .btn-brand {
-  background: rgba(46, 125, 50, 0.85);
-  backdrop-filter: blur(6px);
+  background: var(--primary-green);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
+  border: none;
+  border-radius: 8px;
   padding: 10px 16px;
   font-weight: 500;
-  box-shadow: 0 4px 14px rgba(46, 125, 50, 0.3);
 }
 
 .btn-brand:hover {
-  background: rgba(27, 94, 32, 0.95);
+  background: var(--dark-green);
   color: #ffffff;
 }
 
 .btn-outline-green {
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(6px);
+  background: var(--surface);
   color: var(--dark-green);
   border: 1px solid var(--primary-green);
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 8px 16px;
 }
 
 .btn-outline-green:hover {
-  background: rgba(232, 245, 233, 0.6);
+  background: var(--light-green);
 }
 
-
-  
-   
+/* ============================
+   BALANCE INDICATORS
+   ============================ */
 .balance-positive {
   color: var(--primary-green);
   font-weight: 600;
@@ -195,22 +188,20 @@ body {
 }
 
 .balance-card-positive {
-  background: rgba(232, 245, 233, 0.6);
-  backdrop-filter: blur(6px);
+  background: var(--light-green);
   border-radius: 8px;
   padding: 12px;
 }
 
 .balance-card-negative {
-  background: rgba(253, 236, 234, 0.6);
-  backdrop-filter: blur(6px);
+  background: var(--light-red);
   border-radius: 8px;
   padding: 12px;
 }
 
-
-  
-   
+/* ============================
+   LAYOUT UTILITIES
+   ============================ */
 .wrapper-column {
   flex-direction: column;
   align-items: stretch;
@@ -238,10 +229,26 @@ body {
   margin-top: 16px;
 }
 
+.mt-8 {
+  margin-top: 8px;
+}
+
 .w-100 {
   width: 100%;
 }
 
+.btn-row {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-flex {
+  flex: 1;
+}
+
+/* ============================
+   CHECKBOX / BALANCE ROWS
+   ============================ */
 .checkbox-row {
   display: flex;
   align-items: center;
@@ -254,14 +261,16 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 8px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .balance-row:last-child {
   border-bottom: none;
 }
 
-   
+/* ============================
+   MEMBER CHIPS (CreateGroup page)
+   ============================ */
 .chip-row {
   display: flex;
   flex-wrap: wrap;
@@ -282,33 +291,20 @@ body {
   cursor: pointer;
 }
 
-.mt-8 {
-  margin-top: 8px;
-}
-
-.btn-row {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-flex {
-  flex: 1;
-}
-
-
-  
-   
+/* ============================
+   HOME PAGE
+   ============================ */
 .hero-section {
   text-align: center;
   padding: 2rem 1rem;
 }
 
 .hero-section h1 {
-  color: #ffffff;
+  color: var(--dark-green);
 }
 
 .hero-section p {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--text-muted);
 }
 
 .hero-btn-row {
@@ -330,21 +326,9 @@ body {
   margin-bottom: 0;
 }
 
-   
-.text-green {
-  color: var(--primary-green);
-}
-
-.bg-light-green {
-  background: rgba(232, 245, 233, 0.6);
-}
-
-.text-center-muted {
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
+/* ============================
+   DASHBOARD
+   ============================ */
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -353,14 +337,91 @@ body {
   max-width: 420px;
   margin: 0 auto 8px;
 }
- 
+
 .stat-card {
   max-width: none;
   margin-bottom: 0;
   text-align: center;
 }
- 
+
 .stat-number {
   font-size: 26px;
   margin: 4px 0 0;
+}
+
+.stats-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 800px;
+}
+
+/* ============================
+   GROUP GRID (two cards per row)
+   ============================ */
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.group-grid .custom-card {
+  max-width: none;
+  margin-bottom: 0;
+}
+
+/* ============================
+   DASHBOARD TWO-COLUMN LAYOUT
+   ============================ */
+.dashboard-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.dashboard-left {
+  flex: 2;
+}
+
+.dashboard-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dashboard-right .stat-card {
+  max-width: none;
+}
+
+/* ============================
+   SETTLE UP
+   ============================ */
+.settle-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.settle-form {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* ============================
+   UTILITIES
+   ============================ */
+.text-green {
+  color: var(--primary-green);
+}
+
+.bg-light-green {
+  background: var(--light-green);
+}
+
+.text-center-muted {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
 }

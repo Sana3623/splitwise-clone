@@ -23,9 +23,6 @@ function CreateGroup() {
 
     const submitHandler = async () => {
         const token = localStorage.getItem("token")
-        console.log("token being sent:", token)
-        console.log("userId being sent:", currentUserId)
-
         const response = await fetch("http://localhost:5000/creategrp", {
             method: 'POST',
             headers: {
@@ -35,7 +32,11 @@ function CreateGroup() {
             body: JSON.stringify({ grp_name: groupName, members: members })
         })
         const result = await response.json()
-        console.log(result)
+
+        if (result.notFound && result.notFound.length > 0) {
+            alert(`Group created, but these emails aren't registered and weren't added: ${result.notFound.join(', ')}`)
+        }
+
         navigate('/groups')
     }
 
@@ -51,8 +52,14 @@ function CreateGroup() {
                     </div>
 
                     <div className="mb-3">
-                        <label className="form-label">Add Members</label>
-                        <input className="form-control" value={memberInput} onChange={(e) => setMemberInput(e.target.value)} />
+                        <label className="form-label">Add Members (by email)</label>
+                        <input
+                            className="form-control"
+                            value={memberInput}
+                            onChange={(e) => setMemberInput(e.target.value)}
+                            placeholder="e.g. k@gmail.com"
+                            type="email"
+                        />
                         <button type="button" onClick={addMember} className="btn-outline-green mt-8">Add</button>
                     </div>
 

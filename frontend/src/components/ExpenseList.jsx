@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import '../css/style.css'
 
 function ExpenseList() {
-   
+     const { grpId } = useParams();
     const navigate = useNavigate()
     const [expenses, setExpenses] = useState([])
     const [loading, setLoading] = useState(true)
