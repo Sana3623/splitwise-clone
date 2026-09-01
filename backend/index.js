@@ -22,9 +22,9 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-let generateToken=(id,email,role)=>{
-    return jwt.sign({id,email,role},process.env.JWT_SECRET,{expiresIn: '1h' })
-    
+let generateToken = (id, email, role) => {
+    return jwt.sign({ id, email, role }, process.env.JWT_SECRET, { expiresIn: '1h' })
+
 }
 
 let verifyToken = async (req, res, next) => {
@@ -41,18 +41,18 @@ let verifyToken = async (req, res, next) => {
     })
 }
 
-const authorizeRoles = roles => async (req,res,next) => {
-    
-    if (roles.includes(req.user.role)==false) return res.status(403).json({error:"Access Denied"})
-        next()
+const authorizeRoles = roles => async (req, res, next) => {
+
+    if (roles.includes(req.user.role) == false) return res.status(403).json({ error: "Access Denied" })
+    next()
 }
 
 
 app.post('/signup', async (req, res) => {
-  
+
     const { user_name, user_email, user_password } = req.body
 
-     const sql = 'SELECT * FROM users WHERE user_email = ?'
+    const sql = 'SELECT * FROM users WHERE user_email = ?'
 
     db.query(sql, [user_email], async (err, result) => {
         if (err) {
@@ -82,10 +82,10 @@ app.post('/signup', async (req, res) => {
 })
 
 app.post('/verifyotp', (req, res) => {
-    
-     
+
+
     const { userOtp, userEmail } = req.body
-     
+
 
     if (!otpStorage[userEmail]) {
         return res.status(400).json({ message: "Otp not requested" })
@@ -112,7 +112,7 @@ app.post('/verifyotp', (req, res) => {
                     return res.status(500).json({ message: "Insert failed" })
                 }
                 return res.status(201).json({ message: "User registered successfully" })
-                
+
             })
         })
     } else {
@@ -137,13 +137,13 @@ app.post('/login', (req, res) => {
         let op = await bcrypt.compare(user_password, result[0].user_password)
         if (op) {
             let token = generateToken(result[0].user_id, result[0].user_email, 'user')
-            return res.status(200).json({ token, user_id: result[0].user_id })
+            return res.status(200).json({ token, role: 'user', user_id: result[0].user_id })
         } else {
             return res.status(400).json({ message: "Incorrect password" })
         }
     })
 })
- 
+
 
 app.post('/adminlogin', (req, res) => {
 
@@ -161,9 +161,9 @@ app.post('/adminlogin', (req, res) => {
             return res.status(404).json({ message: "User Not Found" })
         }
 
-        if (admin_pass == result[0].admin_pass)  {
+        if (admin_pass == result[0].admin_pass) {
             let token = generateToken(result[0].admin_id, result[0].admin_email, result[0].role)
-            return res.status(200).json({token,role:result[0].role})  
+            return res.status(200).json({ token, role: result[0].role })
         } else {
             return res.status(400).json({ message: "Incorrect password" })
         }
@@ -236,37 +236,37 @@ app.post('/creategrp', verifyToken, async (req, res) => {
 
 app.get('/groups/:grpId', verifyToken, (req, res) => {
     const { grpId } = req.params
-     const userId = req.user.id;
+    const userId = req.user.id
 
-    const checkMembership = `SELECT * FROM group_members WHERE grp_id = ? AND user_id = ?`;
+    const checkMembership = `SELECT * FROM group_members WHERE grp_id = ? AND user_id = ?`
     db.query(checkMembership, [grpId, userId], (err, memberCheck) => {
-        if (err) return res.status(500).json({ message: "Server error" });
+        if (err) return res.status(500).json({ message: "Server error" })
         if (memberCheck.length === 0) {
-            return res.status(403).json({ message: "You are not a member of this group" });
+            return res.status(403).json({ message: "You are not a member of this group" })
         }
 
-    const groupSql = `SELECT grp_id, grp_name FROM groups_ WHERE grp_id = ?`
-    const membersSql = `
+        const groupSql = `SELECT grp_id, grp_name FROM groups_ WHERE grp_id = ?`
+        const membersSql = `
         SELECT u.user_id, u.user_name, u.user_email
         FROM group_members gm
         JOIN users u ON gm.user_id = u.user_id
         WHERE gm.grp_id = ?
     `
 
-    db.query(groupSql, [grpId], (err, groupResult) => {
-        if (err) return res.status(500).json({ message: "Failed to fetch group" })
-        if (groupResult.length === 0) return res.status(404).json({ message: "Group not found" })
+        db.query(groupSql, [grpId], (err, groupResult) => {
+            if (err) return res.status(500).json({ message: "Failed to fetch group" })
+            if (groupResult.length === 0) return res.status(404).json({ message: "Group not found" })
 
-        db.query(membersSql, [grpId], (err2, memberResult) => {
-            if (err2) return res.status(500).json({ message: "Failed to fetch members" })
+            db.query(membersSql, [grpId], (err2, memberResult) => {
+                if (err2) return res.status(500).json({ message: "Failed to fetch members" })
 
-            res.json({
-                group: groupResult[0],
-                members: memberResult
+                res.json({
+                    group: groupResult[0],
+                    members: memberResult
+                })
             })
         })
     })
-})
 })
 
 app.get('/dashboard-summary', verifyToken, (req, res) => {
@@ -335,7 +335,7 @@ app.post('/settle', verifyToken, (req, res) => {
 
 
 app.get('/groups/:grpId/balances', verifyToken, (req, res) => {
-    const { grpId } = req.params;
+    const { grpId } = req.params
 
     const sql = `
         SELECT 
@@ -367,14 +367,77 @@ app.get('/groups/:grpId/balances', verifyToken, (req, res) => {
             FROM settlements WHERE grp_id = ? GROUP BY paid_to
         ) settled_received ON settled_received.paid_to = u.user_id
         WHERE gm.grp_id = ?
-    `;
+    `
 
     db.query(sql, [grpId, grpId, grpId, grpId, grpId], (err, result) => {
         if (err) {
-            console.log(err);
-            return res.status(500).json({ message: "Failed to calculate balances" });
+            console.log(err)
+            return res.status(500).json({ message: "Failed to calculate balances" })
         }
-        res.json(result);
+        res.json(result)
+    })
+})
+
+app.post('/addexpense', verifyToken, (req, res) => {
+    const { grp_id, paid_by, descri, amount, split_among } = req.body
+
+    const insertExpenseSql = `INSERT INTO expenses (grp_id, user_id, descri, amount) VALUES (?, ?, ?, ?)`
+    db.query(insertExpenseSql, [grp_id, paid_by, descri, amount], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ message: "Failed to add expense" })
+        }
+
+        const expId = result.insertId
+        const shareCount = split_among.length
+        const baseShare = Math.floor((amount / shareCount) * 100) / 100
+        const remainder = Math.round((amount - baseShare * shareCount) * 100) / 100
+
+        const splitRows = split_among.map((userId, index) => {
+            const share = index === 0 ? baseShare + remainder : baseShare
+            return [expId, userId, share]
+        })
+
+        const insertSplitsSql = `INSERT INTO expenses_splits (exp_id, user_id, amount_owed) VALUES ?`
+        db.query(insertSplitsSql, [splitRows], (err2) => {
+            if (err2) {
+                console.log(err2)
+                return res.status(500).json({ message: "Failed to insert splits" })
+            }
+            res.json({ message: "Expense added", expId })
+        })
+    })
+})
+
+app.get('/groups/:grpId/expenses', verifyToken, (req, res) => {
+    const { grpId } = req.params;
+    const userId = req.user.id;
+
+    const checkMembership = `SELECT * FROM group_members WHERE grp_id = ? AND user_id = ?`;
+    db.query(checkMembership, [grpId, userId], (err, memberCheck) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Server error" });
+        }
+        if (memberCheck.length === 0) {
+            return res.status(403).json({ message: "You are not a member of this group" });
+        }
+
+        const sql = `
+            SELECT e.exp_id, e.descri, e.amount, e.created_at, u.user_name AS paid_by
+            FROM expenses e
+            JOIN users u ON e.user_id = u.user_id
+            WHERE e.grp_id = ?
+            ORDER BY e.created_at DESC
+        `;
+
+        db.query(sql, [grpId], (err2, result) => {
+            if (err2) {
+                console.log(err2);
+                return res.status(500).json({ message: "Failed to fetch expenses" });
+            }
+            res.json(result);
+        });
     });
 });
 app.listen(5000, (err) => {

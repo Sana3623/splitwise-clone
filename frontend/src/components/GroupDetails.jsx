@@ -6,40 +6,46 @@ import AddExpenseForm from './AddExpenseForm'
 import '../css/style.css'
 
 function GroupDetails() {
-    const { grpId } = useParams();
-    const navigate = useNavigate();
-    const [groupInfo, setGroupInfo] = useState(null);
-    const [members, setMembers] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { grpId } = useParams()
+    const navigate = useNavigate()
+    const [groupInfo, setGroupInfo] = useState(null)
+    const [members, setMembers] = useState([])
+    const [loading, setLoading] = useState(true)
+     const [refreshKey, setRefreshKey] = useState(0)  
 
     const fetchGroupDetails = async () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token")
         try {
             const response = await fetch(`http://localhost:5000/groups/${grpId}`, {
                 headers: { Authorization: `Bearer ${token}` }
-            });
+            })
 
             if (!response.ok) {
-                navigate('/groups');
-                return;
+                navigate('/groups')
+                return
             }
 
-            const result = await response.json();
-            setGroupInfo(result.group);
-            setMembers(result.members);
+            const result = await response.json()
+            setGroupInfo(result.group)
+            setMembers(result.members)
         } catch (err) {
-            console.log(err);
+            console.log(err)
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
+    }
+
+      const handleExpenseAdded = () => {
+        fetchGroupDetails()
+        setRefreshKey(prev => prev + 1)  // bump the key
     };
 
     useEffect(() => {
-        fetchGroupDetails();
-    }, [grpId]);
+        fetchGroupDetails()
+    }, [grpId])
 
     if (loading) {
-        return null;
+        return null
     }
 
     return (
@@ -55,7 +61,7 @@ function GroupDetails() {
                         {members.length} member{members.length !== 1 ? 's' : ''}: {members.map(m => m.user_name).join(', ')}
                     </p>
                 </div>
-                <AddExpenseForm grpId={grpId} members={members} onExpenseAdded={fetchGroupDetails} />
+                <AddExpenseForm grpId={grpId} members={members} onExpenseAdded={handleExpenseAdded} />
                 <BalanceSummary grpId={grpId} members={members} />
 
                 <ExpenseList grpId={grpId} />

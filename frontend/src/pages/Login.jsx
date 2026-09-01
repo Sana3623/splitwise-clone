@@ -29,6 +29,7 @@ function Login() {
             alert(result.message)
         } else {
             localStorage.setItem("token", result.token)
+            localStorage.setItem("role", result.role)
             localStorage.setItem("userId", result.user_id)
             navigate('/groups')
         }
