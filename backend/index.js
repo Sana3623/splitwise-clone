@@ -410,17 +410,17 @@ app.post('/addexpense', verifyToken, (req, res) => {
 })
 
 app.get('/groups/:grpId/expenses', verifyToken, (req, res) => {
-    const { grpId } = req.params;
-    const userId = req.user.id;
+    const { grpId } = req.params
+    const userId = req.user.id
 
-    const checkMembership = `SELECT * FROM group_members WHERE grp_id = ? AND user_id = ?`;
+    const checkMembership = `SELECT * FROM group_members WHERE grp_id = ? AND user_id = ?`
     db.query(checkMembership, [grpId, userId], (err, memberCheck) => {
         if (err) {
-            console.log(err);
-            return res.status(500).json({ message: "Server error" });
+            console.log(err)
+            return res.status(500).json({ message: "Server error" })
         }
         if (memberCheck.length === 0) {
-            return res.status(403).json({ message: "You are not a member of this group" });
+            return res.status(403).json({ message: "You are not a member of this group" })
         }
 
         const sql = `
@@ -429,17 +429,17 @@ app.get('/groups/:grpId/expenses', verifyToken, (req, res) => {
             JOIN users u ON e.user_id = u.user_id
             WHERE e.grp_id = ?
             ORDER BY e.created_at DESC
-        `;
+        `
 
         db.query(sql, [grpId], (err2, result) => {
             if (err2) {
-                console.log(err2);
-                return res.status(500).json({ message: "Failed to fetch expenses" });
+                console.log(err2)
+                return res.status(500).json({ message: "Failed to fetch expenses" })
             }
-            res.json(result);
-        });
-    });
-});
+            res.json(result)
+        })
+    })
+})
 app.listen(5000, (err) => {
     if (err) console.log(err)
     else console.log("5000")

@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { use, useState } from 'react'
 import '../css/style.css'
 import logo from '../assets/spliteaselogo.svg'
 import VerifyOtp from '../components/VerifyOtp'
 
 function Signup() {
+    let[error,setError]=useState(false)
     let [formData, setFormData] = useState({ user_name: "", user_email: "", user_password: "" })
     let [otp, setOtp] = useState(false)
 
@@ -12,8 +13,11 @@ function Signup() {
         setFormData({ ...formData, [name]: value })
     }
 
-    let submitHandler = async (e) => {
-        e.preventDefault()
+    let validation = () => {
+
+    }
+    let submitHandler = async () => {
+       
 
         let response = await fetch('http://localhost:5000/signup', {
             method: 'post',
