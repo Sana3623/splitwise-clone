@@ -45,6 +45,22 @@ function GroupPage() {
         return null
     }
 
+    const deleteGroup = async (grpId) => {
+        const token = localStorage.getItem("token")
+        const response = await fetch(`http://localhost:5000/groups/${grpId}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` }
+        })
+        const result = await response.json()
+
+        if (!response.ok) {
+            alert(result.message)
+            return
+        }
+
+        getUserGroups()
+    }
+
     return (
         <div className="page-bg">
             <div className="custom-wrapper wrapper-column">
@@ -53,6 +69,7 @@ function GroupPage() {
                 <GroupList
                     groups={groups}
                     onGroupClick={(grpId) => navigate(`/groups/${grpId}`)}
+                    onGroupDelete={deleteGroup}
                 />
 
                 <button

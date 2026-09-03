@@ -440,6 +440,66 @@ app.get('/groups/:grpId/expenses', verifyToken, (req, res) => {
         })
     })
 })
+
+app.delete('/groups/:grpId', verifyToken, (req, res) => {
+    const { grpId } = req.params
+    const userId = req.user.id
+
+    const checkCreatorSql = `SELECT user_id FROM groups_ WHERE grp_id = ?`
+    db.query(checkCreatorSql, [grpId], (err, groupResult) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ message: "Server error" })
+        }
+        if (groupResult.length === 0) {
+            return res.status(404).json({ message: "Group not found" })
+        }
+        if (groupResult[0].user_id != userId) {
+            return res.status(403).json({ message: "Only the group creator can delete this group" })
+        }
+
+        const deleteSplitsSql = `DELETE es FROM expenses_splits es JOIN expenses e ON es.exp_id = e.exp_id WHERE e.grp_id = ?`
+        db.query(deleteSplitsSql, [grpId], (err2) => {
+            if (err2) {
+                console.log(err2)
+                return res.status(500).json({ message: "Failed to delete splits" })
+            }
+
+            const deleteExpensesSql = `DELETE FROM expenses WHERE grp_id = ?`
+            db.query(deleteExpensesSql, [grpId], (err3) => {
+                if (err3) {
+                    console.log(err3)
+                    return res.status(500).json({ message: "Failed to delete expenses" })
+                }
+
+                const deleteSettlementsSql = `DELETE FROM settlements WHERE grp_id = ?`
+                db.query(deleteSettlementsSql, [grpId], (err4) => {
+                    if (err4) {
+                        console.log(err4)
+                        return res.status(500).json({ message: "Failed to delete settlements" })
+                    }
+
+                    const deleteMembersSql = `DELETE FROM group_members WHERE grp_id = ?`
+                    db.query(deleteMembersSql, [grpId], (err5) => {
+                        if (err5) {
+                            console.log(err5)
+                            return res.status(500).json({ message: "Failed to delete members" })
+                        }
+
+                        const deleteGroupSql = `DELETE FROM groups_ WHERE grp_id = ?`
+                        db.query(deleteGroupSql, [grpId], (err6) => {
+                            if (err6) {
+                                console.log(err6)
+                                return res.status(500).json({ message: "Failed to delete group" })
+                            }
+                            res.json({ message: "Group deleted" })
+                        })
+                    })
+                })
+            })
+        })
+    })
+})
 app.listen(5000, (err) => {
     if (err) console.log(err)
     else console.log("5000")
