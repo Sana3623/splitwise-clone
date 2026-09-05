@@ -45,8 +45,8 @@ function Profile() {
                     </div>
                 </div>
 
-                <div className="custom-card">
-                    <p className="card-title-left cursor-pointer" onClick={() => navigate('/changepassword')}>Security</p>
+                <div className="custom-card"> <p>Security</p>
+                    <p className="card-title-left cursor-pointer" onClick={() => navigate('/changepassword')}>changepassword</p>
                     <p className="card-title-left cursor-pointer" onClick={() => navigate('/logout')}>Sign Out</p>
                 </div>
             </div>

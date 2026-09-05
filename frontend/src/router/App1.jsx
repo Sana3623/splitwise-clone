@@ -13,6 +13,7 @@ import Dashboard from '../pages/Dashboard'
 import AdminLogin from '../pages/AdminLogin'
 import AdminDashboard from '../pages/AdminDashboard'
 import LogOut from '../pages/LogOut'
+import Profile from '../pages/Profile'
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
     <Route path="/adminlogin" element={<AdminLogin updaterole={updaterole}/>} />
     <Route path="/admin/dashboard" element={<AdminDashboard />} />
     <Route path="/logout" element={<LogOut updaterole={updaterole} />} />
+    <Route path="/userprofile" element={<Profile />} />
     
 </Routes>
     </>

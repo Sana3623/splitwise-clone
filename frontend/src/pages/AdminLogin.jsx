@@ -11,8 +11,8 @@ function AdminLogin() {
         setFormData({ ...formData, [name]: value })
     }
 
-    const submitHandler = async (e) => {
-        e.preventDefault()
+    const submitHandler = async () => {
+       
         const response = await fetch('http://localhost:5000/adminlogin', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
@@ -24,7 +24,7 @@ function AdminLogin() {
             alert(result.message)
         } else {
             localStorage.setItem("token", result.token)
-            localStorage.setItem("role", result.role)
+            localStorage.setItem("role", result.role_)
             navigate('/admin/dashboard')
         }
     }

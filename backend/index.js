@@ -152,6 +152,7 @@ app.post('/adminlogin', (req, res) => {
     const sql = `SELECT * FROM admin_ WHERE admin_email = ?`
 
     db.query(sql, [admin_email], (err, result) => {
+        
         if (err) {
             console.log(err)
             return res.status(500).json({ message: 'Server error' })
@@ -162,8 +163,8 @@ app.post('/adminlogin', (req, res) => {
         }
 
         if (admin_pass == result[0].admin_pass) {
-            let token = generateToken(result[0].admin_id, result[0].admin_email, result[0].role)
-            return res.status(200).json({ token, role: result[0].role })
+            let token = generateToken(result[0].admin_id, result[0].admin_email, result[0].role_)
+            return res.status(200).json({ token, role_: 'admin' })
         } else {
             return res.status(400).json({ message: "Incorrect password" })
         }
@@ -498,6 +499,23 @@ app.delete('/groups/:grpId', verifyToken, (req, res) => {
                 })
             })
         })
+    })
+})
+
+app.get('/userprofile', verifyToken, (req, res) => {
+    const userId = req.user.id
+
+    const sql = `SELECT user_id, user_name, user_email, created_at FROM users WHERE user_id = ?`
+
+    db.query(sql, [userId], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ message: 'Server error' })
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+        return res.status(200).json(result[0])
     })
 })
 app.listen(5000, (err) => {
