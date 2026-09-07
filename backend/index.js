@@ -518,6 +518,42 @@ app.get('/userprofile', verifyToken, (req, res) => {
         return res.status(200).json(result[0])
     })
 })
+
+app.post('/changepassword' ,verifyToken,(req,res) =>{
+    const{oldPassword, newPassword} = req.body
+    const user_id=req.user.id
+
+    const sql = `SELECT user_password FROM users WHERE user_id =?`
+
+    db.query(sql, [user_id], async(err,result) =>{
+        if(err) {
+            console.log(err)
+            return res.status(500).json({message: 'Server Error'})
+        }
+
+        let match = await bcrypt.compare(oldPassword, result[0].user_password)
+        if(!match){
+            return res.status(400).json({message: 'Old password is incorrect'})
+
+        }
+
+        bcrypt.hash(newPassword, saltRounds, (err, hash)=>{
+            if(err){
+                console.log(err)
+                return res.status(500).json({message: 'Error hashing Password'})
+            }
+
+            const updatesql = `UPDATE users SET user_password = ? WHERE user_id =?`
+            db.query(updatesql, [hash,user_id],(err,result)=>{
+                if(err){
+                    console.log(err)
+                    return res.status(500).json({message: 'Update Failed'})
+                }
+                return res.status(200).json({message: 'Password Changed Succesfully'})
+            }) 
+        })
+    })
+})
 app.listen(5000, (err) => {
     if (err) console.log(err)
     else console.log("5000")

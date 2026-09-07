@@ -14,6 +14,8 @@ import AdminLogin from '../pages/AdminLogin'
 import AdminDashboard from '../pages/AdminDashboard'
 import LogOut from '../pages/LogOut'
 import Profile from '../pages/Profile'
+import Verify_otp from '../pages/VerifyOtp'
+import ChangePassword from '../pages/ChangePassword'
 
 
 function App() {
@@ -38,6 +40,7 @@ function App() {
     <Route path="/" element={<Home />} />
     <Route path="/login" element={<Login updaterole={updaterole}/>} />
     <Route path="/signup" element={<Signup />} />
+    <Route path='/verifyotp' element={<Verify_otp/>} />
     <Route path="/groups" element={<GroupPage />} />
     <Route path="/groups/new" element={<CreateGroup />} />
     <Route path="/groups/:grpId" element={<GroupDetails />} />
@@ -46,6 +49,8 @@ function App() {
     <Route path="/admin/dashboard" element={<AdminDashboard />} />
     <Route path="/logout" element={<LogOut updaterole={updaterole} />} />
     <Route path="/userprofile" element={<Profile />} />
+    <Route path="/changepassword" element={<ChangePassword />} />
+
     
 </Routes>
     </>

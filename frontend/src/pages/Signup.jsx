@@ -1,7 +1,7 @@
 import React, { use, useState } from 'react'
 import '../css/style.css'
 import logo from '../assets/spliteaselogo.svg'
-import VerifyOtp from '../components/VerifyOtp'
+import VerifyOtp from './VerifyOtp'
 
 function Signup() {
     let[error,setError]=useState(false)
