@@ -35,7 +35,7 @@ function App() {
 
   return (
     <>
-      <Navbar />
+      <Navbar role={role} />
     <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/login" element={<Login updaterole={updaterole}/>} />

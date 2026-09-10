@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import '../css/style.css'
 import logo from '../assets/spliteaselogo.svg'
 
-function Navbar() {
+function Navbar({ role}) {
     return (
         <nav className="navbar navbar-expand-lg navbar-brand-custom">
             <div className="container">
@@ -18,30 +18,50 @@ function Navbar() {
 
                 <div className="collapse navbar-collapse" id="navbarContent">
                     <ul className="navbar-nav ms-auto">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/">Home</Link>
-                        </li>
+                        {!role ? (<>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/">Home</Link>
+                            </li>
 
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/login">Login</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/signup">Sign Up</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/groups">Groups Page</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/dashboard">Dashboard</Link>
-                        </li>
-                         <li className="nav-item">
-                            <Link className="nav-link" to="/userprofile">Profile</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link icon-link" to="/logout">
-                                Logout
-                            </Link>
-                        </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/login">Login</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/signup">Sign Up</Link>
+                            </li>
+                        </>) : role === "admin" ? (<>
+                        
+                            <li className="nav-item">
+                                <Link className="nav-link icon-link" to="/admin/dashboard">
+                                    Admin Dashboard
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link icon-link" to="/logout">
+                                    Logout
+                                </Link>
+                            </li>
+
+                        </>) : (
+                            <>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/groups">Groups Page</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/userprofile">Profile</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link icon-link" to="/logout">
+                                        Logout
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+
+
 
                     </ul>
                 </div>
