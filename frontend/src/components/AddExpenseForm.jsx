@@ -16,38 +16,56 @@ function AddExpenseForm({ grpId, members, onExpenseAdded }) {
         }
     }
 
-    const submitHandler = async (e) => {
-        e.preventDefault()
+   const submitHandler = async () => {
+   
 
-        if (!descri.trim() || !amount || splitAmong.length === 0) {
-            alert("Please fill description, amount, and select at least one member to split with")
-            return
-        }
+    const trimmedDescri = descri.trim()
+    const numericAmount = parseFloat(amount)
 
-        const token = localStorage.getItem("token")
-
-        const response = await fetch("http://localhost:5000/addexpense", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                grp_id: grpId,
-                paid_by: paidBy,
-                descri: descri,
-                amount: parseFloat(amount),
-                split_among: splitAmong
-            })
-        })
-        const result = await response.json()
-        console.log(result)
-
-        setDescri('')
-        setAmount('')
-        onExpenseAdded()
+    if (!trimmedDescri) {
+        alert("Please enter a description")
+        return
+    }
+    if (isNaN(numericAmount) || numericAmount <= 0) {
+        alert("Please enter a valid amount greater than 0")
+        return
+    }
+    if (!paidBy) {
+        alert("Please select who paid")
+        return
+    }
+    if (splitAmong.length === 0) {
+        alert("Select at least one member to split with")
+        return
     }
 
+    const token = localStorage.getItem("token")
+
+    const response = await fetch("http://localhost:5000/addexpense", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            grp_id: grpId,
+            paid_by: paidBy,
+            descri: trimmedDescri,
+            amount: numericAmount,
+            split_among: splitAmong
+        })
+    })
+    const result = await response.json()
+
+    if (!response.ok) {
+        alert(result.message || "Failed to add expense")
+        return
+    }
+
+    setDescri('')
+    setAmount('')
+    onExpenseAdded()
+}
     return (
         <div className="custom-card">
             <p className="card-title">Add expense</p>

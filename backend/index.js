@@ -382,30 +382,62 @@ app.get('/groups/:grpId/balances', verifyToken, (req, res) => {
 app.post('/addexpense', verifyToken, (req, res) => {
     const { grp_id, paid_by, descri, amount, split_among } = req.body
 
-    const insertExpenseSql = `INSERT INTO expenses (grp_id, user_id, descri, amount) VALUES (?, ?, ?, ?)`
-    db.query(insertExpenseSql, [grp_id, paid_by, descri, amount], (err, result) => {
+    if (!descri || !descri.trim()) {
+        return res.status(400).json({ message: "Description is required" })
+    }
+    const numericAmount = parseFloat(amount)
+    if (isNaN(numericAmount) || numericAmount <= 0) {
+        return res.status(400).json({ message: "Amount must be a positive number" })
+    }
+    if (!Array.isArray(split_among) || split_among.length === 0) {
+        return res.status(400).json({ message: "At least one member must be selected to split with" })
+    }
+    if (!paid_by) {
+        return res.status(400).json({ message: "Payer is required" })
+    }
+
+    const checkMembersSql = `SELECT user_id FROM group_members WHERE grp_id = ?`
+    db.query(checkMembersSql, [grp_id], (err, memberRows) => {
         if (err) {
             console.log(err)
-            return res.status(500).json({ message: "Failed to add expense" })
+            return res.status(500).json({ message: "Server error" })
         }
 
-        const expId = result.insertId
-        const shareCount = split_among.length
-        const baseShare = Math.floor((amount / shareCount) * 100) / 100
-        const remainder = Math.round((amount - baseShare * shareCount) * 100) / 100
+        const memberIds = memberRows.map(r => r.user_id)
 
-        const splitRows = split_among.map((userId, index) => {
-            const share = index === 0 ? baseShare + remainder : baseShare
-            return [expId, userId, share]
-        })
+        if (!memberIds.includes(Number(paid_by))) {
+            return res.status(400).json({ message: "Payer must be a member of this group" })
+        }
+        const invalidSplitMembers = split_among.filter(id => !memberIds.includes(Number(id)))
+        if (invalidSplitMembers.length > 0) {
+            return res.status(400).json({ message: "All split members must belong to this group" })
+        }
 
-        const insertSplitsSql = `INSERT INTO expenses_splits (exp_id, user_id, amount_owed) VALUES ?`
-        db.query(insertSplitsSql, [splitRows], (err2) => {
+        const insertExpenseSql = `INSERT INTO expenses (grp_id, user_id, descri, amount) VALUES (?, ?, ?, ?)`
+        db.query(insertExpenseSql, [grp_id, paid_by, descri.trim(), numericAmount], (err2, result) => {
             if (err2) {
                 console.log(err2)
-                return res.status(500).json({ message: "Failed to insert splits" })
+                return res.status(500).json({ message: "Failed to add expense" })
             }
-            res.json({ message: "Expense added", expId })
+
+            const expId = result.insertId
+            const shareCount = split_among.length
+            const baseShare = Math.floor((numericAmount / shareCount) * 100) / 100
+            const remainder = Math.round((numericAmount - baseShare * shareCount) * 100) / 100
+
+            const splitRows = split_among.map((userId, index) => {
+                const share = index === 0 ? baseShare + remainder : baseShare
+                return [expId, userId, share]
+            })
+
+            const insertSplitsSql = `INSERT INTO expenses_splits (exp_id, user_id, amount_owed) VALUES ?`
+            db.query(insertSplitsSql, [splitRows], (err3) => {
+                if (err3) {
+                    console.log(err3)
+                    return res.status(500).json({ message: "Failed to insert splits" })
+                }
+                res.json({ message: "Expense added", expId })
+            })
         })
     })
 })
