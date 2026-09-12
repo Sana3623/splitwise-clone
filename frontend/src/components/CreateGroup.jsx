@@ -10,35 +10,60 @@ function CreateGroup() {
     const [memberInput, setMemberInput] = useState('')
     const [members, setMembers] = useState([])
 
-    const addMember = () => {
-        if (memberInput.trim()) {
-            setMembers([...members, memberInput.trim()])
-            setMemberInput('')
-        }
+ const addMember = () => {
+    const trimmed = memberInput.trim()
+    if (!trimmed) return
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailPattern.test(trimmed)) {
+        alert("Please enter a valid email address")
+        return
     }
+    if (members.includes(trimmed)) {
+        alert("This member has already been added")
+        return
+    }
+
+    setMembers([...members, trimmed])
+    setMemberInput('')
+}
 
     const removeMember = (name) => {
         setMembers(members.filter(m => m !== name))
     }
 
-    const submitHandler = async () => {
-        const token = localStorage.getItem("token")
-        const response = await fetch("http://localhost:5000/creategrp", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({ grp_name: groupName, members: members })
-        })
-        const result = await response.json()
+ const submitHandler = async () => {
+    const trimmedName = groupName.trim()
 
-        if (result.notFound && result.notFound.length > 0) {
-            alert(`Group created, but these emails aren't registered and weren't added: ${result.notFound.join(', ')}`)
-        }
-
-        navigate('/groups')
+    if (!trimmedName) {
+        alert("Please enter a group name")
+        return
     }
+
+    const uniqueMembers = [...new Set(members)]
+
+    const token = localStorage.getItem("token")
+    const response = await fetch("http://localhost:5000/creategrp", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ grp_name: trimmedName, members: uniqueMembers })
+    })
+    const result = await response.json()
+
+    if (!response.ok) {
+        alert(result.message || "Failed to create group")
+        return
+    }
+
+    if (result.notFound && result.notFound.length > 0) {
+        alert(`Group created, but these emails aren't registered and weren't added: ${result.notFound.join(', ')}`)
+    }
+
+    navigate('/groups')
+}
 
     return (
         <div className="page-bg">

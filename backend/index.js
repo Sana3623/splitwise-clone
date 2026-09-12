@@ -194,8 +194,12 @@ app.post('/creategrp', verifyToken, async (req, res) => {
     const { grp_name, members } = req.body
     const userId = req.user.id
 
+    if (!grp_name || !grp_name.trim()) {
+        return res.status(400).json({ message: "Group name is required" })
+    }
+
     const sql1 = `INSERT INTO groups_ (grp_name, user_id) VALUES (?, ?)`
-    db.query(sql1, [grp_name, userId], (err, result) => {
+    db.query(sql1, [grp_name.trim(), userId], (err, result) => {
         if (err) {
             console.log(err)
             return res.status(500).json({ message: "Group creation failed" })
@@ -210,8 +214,9 @@ app.post('/creategrp', verifyToken, async (req, res) => {
             }
 
             const notFound = []
+            const uniqueEmails = [...new Set(members || [])]
 
-            for (const email of (members || [])) {
+            for (const email of uniqueEmails) {
                 const [userRows] = await db.promise().query(
                     `SELECT user_id FROM users WHERE user_email = ?`, [email]
                 )
@@ -219,17 +224,15 @@ app.post('/creategrp', verifyToken, async (req, res) => {
                     notFound.push(email)
                     continue
                 }
+                if (userRows[0].user_id === userId) continue   
+
                 await db.promise().query(
                     `INSERT INTO group_members (grp_id, user_id) VALUES (?, ?)`,
                     [grpId, userRows[0].user_id]
                 )
             }
 
-            res.json({
-                message: "Group created",
-                grpId,
-                notFound   // emails that weren't registered, sent back to the frontend
-            })
+            res.json({ message: "Group created", grpId, notFound })
         })
     })
 })
