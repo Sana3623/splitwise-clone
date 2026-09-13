@@ -18,21 +18,28 @@ function BalanceSummary({ grpId, members }) {
     useEffect(() => {
         fetchBalances();
     }, [grpId]);
+    
+const submitSettle = async (paidTo) => {
+    const token = localStorage.getItem("token")
+    const response = await fetch("http://localhost:5000/settle", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ grp_id: grpId, paid_to: paidTo, amount: parseFloat(settleAmount) })
+    })
+    const result = await response.json()
 
-    const submitSettle = async (paidTo) => {
-        const token = localStorage.getItem("token");
-        await fetch("http://localhost:5000/settle", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({ grp_id: grpId, paid_to: paidTo, amount: parseFloat(settleAmount) })
-        });
-        setSettleTarget(null);
-        setSettleAmount('');
-        fetchBalances();
-    };
+    if (!response.ok) {
+        alert(result.message)
+        return
+    }
+
+    setSettleTarget(null)
+    setSettleAmount('')
+    fetchBalances()
+}
 
     return (
         <div className="custom-card">

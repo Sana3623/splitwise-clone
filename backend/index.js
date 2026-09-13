@@ -327,13 +327,68 @@ app.post('/settle', verifyToken, (req, res) => {
     const { grp_id, paid_to, amount } = req.body
     const paidBy = req.user.id
 
-    const sql = `INSERT INTO settlements (grp_id, paid_by, paid_to, amount) VALUES (?, ?, ?, ?)`
-    db.query(sql, [grp_id, paidBy, paid_to, amount], (err, result) => {
+    if (!paid_to) {
+        return res.status(400).json({ message: "Please select who to settle with" })
+    }
+    if (Number(paid_to) === paidBy) {
+        return res.status(400).json({ message: "You cannot settle up with yourself" })
+    }
+    const numericAmount = parseFloat(amount)
+    if (isNaN(numericAmount) || numericAmount <= 0) {
+        return res.status(400).json({ message: "Amount must be a positive number" })
+    }
+
+    const balanceSql = `
+        SELECT 
+            COALESCE(paid.total_paid, 0) 
+              - COALESCE(owed.total_owed, 0)
+              + COALESCE(settled_paid.total, 0)
+              - COALESCE(settled_received.total, 0) AS net_balance
+        FROM (SELECT ? AS uid) me
+        LEFT JOIN (
+            SELECT user_id, SUM(amount) AS total_paid 
+            FROM expenses WHERE grp_id = ? GROUP BY user_id
+        ) paid ON paid.user_id = me.uid
+        LEFT JOIN (
+            SELECT es.user_id, SUM(es.amount_owed) AS total_owed
+            FROM expenses_splits es
+            JOIN expenses e ON es.exp_id = e.exp_id
+            WHERE e.grp_id = ?
+            GROUP BY es.user_id
+        ) owed ON owed.user_id = me.uid
+        LEFT JOIN (
+            SELECT paid_by, SUM(amount) AS total
+            FROM settlements WHERE grp_id = ? GROUP BY paid_by
+        ) settled_paid ON settled_paid.paid_by = me.uid
+        LEFT JOIN (
+            SELECT paid_to, SUM(amount) AS total
+            FROM settlements WHERE grp_id = ? GROUP BY paid_to
+        ) settled_received ON settled_received.paid_to = me.uid
+    `
+
+    db.query(balanceSql, [paidBy, grp_id, grp_id, grp_id, grp_id], (err, result) => {
         if (err) {
             console.log(err)
-            return res.status(500).json({ message: "Settlement failed" })
+            return res.status(500).json({ message: "Server error" })
         }
-        res.json({ message: "Settled up" })
+
+        const currentBalance = Number(result[0].net_balance)
+
+        if (currentBalance >= 0) {
+            return res.status(400).json({ message: "You don't owe anything in this group" })
+        }
+        if (numericAmount > Math.abs(currentBalance)) {
+            return res.status(400).json({ message: `You only owe ₹${Math.abs(currentBalance).toFixed(2)} — can't settle more than that` })
+        }
+
+        const sql = `INSERT INTO settlements (grp_id, paid_by, paid_to, amount) VALUES (?, ?, ?, ?)`
+        db.query(sql, [grp_id, paidBy, paid_to, numericAmount], (err2) => {
+            if (err2) {
+                console.log(err2)
+                return res.status(500).json({ message: "Settlement failed" })
+            }
+            res.json({ message: "Settled up" })
+        })
     })
 })
 

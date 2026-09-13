@@ -84,9 +84,9 @@ body {
   padding: 24px;
   width: 100%;
   max-width: 420px;
+  margin: 0 auto 14px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   text-align: left;
-  margin-bottom: 14px;
 }
 
 .custom-card:hover,
@@ -386,6 +386,21 @@ body {
 
 .delete-btn:hover {
   color: #8e1e1e;
+}
+
+/* ============================
+   EXPENSE ROW EXTRAS
+   ============================ */
+.expense-date {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.expense-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* ============================
