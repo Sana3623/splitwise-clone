@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-function ExpenseList({ grpId }) {
+function ExpenseList({ grpId, onExpenseDeleted }) {
     const [expenses, setExpenses] = useState([])
     const [loading, setLoading] = useState(true)
 
@@ -27,6 +27,25 @@ function ExpenseList({ grpId }) {
         fetchExpenses()
     }, [grpId])
 
+    const deleteExpense = async (expId) => {
+        if (!window.confirm("Delete this expense?")) return
+
+        const token = localStorage.getItem("token")
+        const response = await fetch(`http://localhost:5000/expenses/${expId}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` }
+        })
+        const result = await response.json()
+
+        if (!response.ok) {
+            alert(result.message)
+            return
+        }
+
+        fetchExpenses()
+        if (onExpenseDeleted) onExpenseDeleted()
+    }
+
     if (loading) {
         return <p className="text-center-muted">Loading expenses...</p>
     }
@@ -42,8 +61,12 @@ function ExpenseList({ grpId }) {
                         <div>
                             <p className="card-title-left">{exp.descri}</p>
                             <p className="card-subtitle">Paid by {exp.paid_by}</p>
+                            <p className="expense-date">{new Date(exp.created_at).toLocaleString()}</p>
                         </div>
-                        <p className="balance-positive">₹{exp.amount}</p>
+                        <div className="expense-right">
+                            <p className="balance-positive">₹{exp.amount}</p>
+                            <button className="delete-btn" onClick={() => deleteExpense(exp.exp_id)}>×</button>
+                        </div>
                     </div>
                 ))
             )}

@@ -644,6 +644,42 @@ app.post('/changepassword' ,verifyToken,(req,res) =>{
         })
     })
 })
+
+app.delete('/expenses/:expId', verifyToken, (req, res) => {
+    const { expId } = req.params
+    const userId = req.user.id
+
+    const checkSql = `SELECT user_id FROM expenses WHERE exp_id = ?`
+    db.query(checkSql, [expId], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ message: "Server error" })
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ message: "Expense not found" })
+        }
+        if (result[0].user_id != userId) {
+            return res.status(403).json({ message: "Only the person who added this expense can delete it" })
+        }
+
+        const deleteSplitsSql = `DELETE FROM expenses_splits WHERE exp_id = ?`
+        db.query(deleteSplitsSql, [expId], (err2) => {
+            if (err2) {
+                console.log(err2)
+                return res.status(500).json({ message: "Failed to delete splits" })
+            }
+
+            const deleteExpenseSql = `DELETE FROM expenses WHERE exp_id = ?`
+            db.query(deleteExpenseSql, [expId], (err3) => {
+                if (err3) {
+                    console.log(err3)
+                    return res.status(500).json({ message: "Failed to delete expense" })
+                }
+                res.json({ message: "Expense deleted" })
+            })
+        })
+    })
+})
 app.listen(5000, (err) => {
     if (err) console.log(err)
     else console.log("5000")

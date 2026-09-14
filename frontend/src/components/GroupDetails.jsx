@@ -36,7 +36,7 @@ function GroupDetails() {
     }
 
       const handleExpenseAdded = () => {
-        fetchGroupDetails()
+       
         setRefreshKey(prev => prev + 1)  // bump the key
     };
 
@@ -62,9 +62,9 @@ function GroupDetails() {
                     </p>
                 </div>
                 <AddExpenseForm grpId={grpId} members={members} onExpenseAdded={handleExpenseAdded} />
-                <BalanceSummary grpId={grpId} members={members} />
+                <BalanceSummary key={refreshKey} grpId={grpId} members={members} />
 
-                <ExpenseList grpId={grpId} />
+               <ExpenseList key={refreshKey} grpId={grpId} onExpenseDeleted={handleDataChanged} />
             </div>
         </div>
     )
